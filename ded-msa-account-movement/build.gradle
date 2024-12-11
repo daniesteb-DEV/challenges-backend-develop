@@ -1,0 +1,132 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
+plugins {
+    id 'jacoco'
+    id 'java'
+    id 'org.springframework.boot' version '3.3.5'
+    id 'io.spring.dependency-management' version '1.1.6'
+    id 'org.openapi.generator' version '7.9.0'
+}
+
+def packageName = "com.nttdata.accountmovement"
+
+springBoot {
+    mainClass = "${packageName}.DedMsaAccountMovementApplication"
+}
+
+group = "${packageName}"
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        url "https://repo.spring.io/milestone"
+    }
+}
+
+ext {
+    mapstructVersion = "1.6.2"
+    lombokVersion = "1.18.30"
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Spring
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.6.0'
+
+    // Persistence
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    implementation 'org.postgresql:postgresql'
+    runtimeOnly 'org.postgresql:r2dbc-postgresql'
+
+    // Mapstruct
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+    //test
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "io.projectreactor:reactor-test"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine"
+    testImplementation "org.xmlunit:xmlunit-core:2.10.0"
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.register('buildSpringServer', GenerateTask) {
+    generatorName = "spring"
+    templateDir = "$rootDir/src/main/resources/openapi-templates"
+    inputSpec = "$rootDir/src/main/resources/openapi.yaml".toString()
+    outputDir = "$buildDir/generated".toString()
+    apiPackage = "${packageName}.infrastructure.input.adapter.rest"
+    modelPackage = "${packageName}.infrastructure.input.adapter.rest.models"
+    library = "spring-boot"
+    configOptions = [
+            skipDefaultInterface                    : "true",
+            useSpringBoot3                          : "true",
+            useJakartaEe                            : "true",
+            serializableModel                       : "true",
+            dateLibrary                             : "java8",
+            openApiNullable                         : "false",
+            reactive                                : "true",
+            apiFirst                                : "false",
+            delegatePattern                         : "false",
+            configPackage                           : "${packageName}.config",
+            sourceFolder                            : "src/main/java",
+            basePackage                             : "${packageName}",
+            disallowAdditionalPropertiesIfNotPresent: "true",
+            interfaceOnly                           : "true"
+    ]
+}
+
+tasks.register("optimusCreateUnitTest", JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.nttdata.test.core.ProcessMain'
+}
+
+compileJava {
+    dependsOn buildSpringServer
+    options.compilerArgs += [
+            "-Amapstruct.suppressGeneratorTimestamp=true",
+            "-Amapstruct.suppressGeneratorVersionInfoComment=true",
+            "-Amapstruct.verbose=true",
+            "-Amapstruct.defaultComponentModel=spring"
+    ]
+}
+
+sourceSets.main.java.srcDirs = ["${buildDir}/generated/src/main/java", "src/main/java"]
+
+springBoot {
+    buildInfo()
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        xml.destination file("$buildDir/jacoco/test.xml")
+        html.destination file("$buildDir/jacoco/index.html")
+        html.required = true
+        csv.required = true
+    }
+}

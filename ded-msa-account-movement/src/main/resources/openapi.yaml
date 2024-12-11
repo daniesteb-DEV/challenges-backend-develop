@@ -1,0 +1,383 @@
+openapi: 3.0.0
+info:
+  title: API | daniesteb | Account Movement
+  description: Api to manage accounts and movements
+  contact:
+    name: daniesteb - Daniel Jimenez
+    email: danielejimeneza@gmail.com
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/ded/v1
+    description: Development
+tags:
+  - name: Account
+    description: Account controller
+  - name: Movement
+    description: Movement controller
+paths:
+  /accounts:
+    get:
+      tags:
+        - Account
+      summary: Get account
+      description: |
+        Search for account information
+      operationId: getAccount
+      parameters:
+        - name: accountNumber
+          in: query
+          description: Account number
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: "2203767188"
+      responses:
+        "200":
+          description: <b>`OK`</b>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAccountResponse'
+    post:
+      tags:
+        - Account
+      summary: Create account
+      description: |
+        Create new aaccount
+      operationId: postAccount
+      requestBody:
+        description: Account to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostAccountRequest'
+      responses:
+        "201":
+          description: <b>`Created`</b>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostAccountResponse'
+  /accounts/{accountNumber}:
+    put:
+      tags:
+        - Account
+      summary: Update account
+      description: |
+        Update account
+      operationId: putAccount
+      parameters:
+        - name: accountNumber
+          in: path
+          description: Account identification
+          required: true
+          style: simple
+          explode: false
+          schema:
+            maxLength: 30
+            minLength: 0
+            type: string
+            example: "2203767188"
+      requestBody:
+        description: Customer to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutAccountRequest'
+      responses:
+        "200":
+          description: <b>`OK`</b>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutAccountResponse'
+    delete:
+      tags:
+        - Account
+      summary: Delete accont
+      description: |
+        Delete account
+      operationId: deleteAccount
+      parameters:
+        - name: accountNumber
+          in: path
+          description: Account identification
+          required: true
+          style: simple
+          explode: false
+          schema:
+            maxLength: 30
+            minLength: 0
+            type: string
+            example: "2203767188"
+      responses:
+        "200":
+          description: <b>`OK`</b>
+  /movements:
+    get:
+      tags:
+        - Movement
+      summary: Get movement
+      description: |
+        Search for movement information
+      operationId: getMovement
+      parameters:
+        - name: movementId
+          in: query
+          description: Movement id
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: a10bae03-279d-4724-ba5b-bd1353f87295
+      responses:
+        "200":
+          description: <b>`OK`</b>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMovementResponse'
+    post:
+      tags:
+        - Movement
+      summary: Create movement
+      description: |
+        Create new movement
+      operationId: postMovement
+      requestBody:
+        description: Movement to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostMovementRequest'
+      responses:
+        "201":
+          description: <b>`Created`</b>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostMovementResponse'
+  /movements/{movementId}:
+    put:
+      tags:
+        - Movement
+      summary: Update movement
+      description: |
+        Update movement
+      operationId: putMovement
+      parameters:
+        - name: movementId
+          in: path
+          description: Movement identification
+          required: true
+          style: simple
+          explode: false
+          schema:
+            maxLength: 36
+            minLength: 0
+            type: string
+            example: a10bae03-279d-4724-ba5b-bd1353f87295
+      requestBody:
+        description: Customer to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutAccountRequest'
+      responses:
+        "200":
+          description: <b>`OK`</b>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutAccountResponse'
+    delete:
+      tags:
+        - Movement
+      summary: Delete movement
+      description: |
+        Delete movement
+      operationId: deleteMovement
+      parameters:
+        - name: movementId
+          in: path
+          description: Movement identification
+          required: true
+          style: simple
+          explode: false
+          schema:
+            maxLength: 36
+            minLength: 0
+            type: string
+            example: a10bae03-279d-4724-ba5b-bd1353f87295
+      responses:
+        "200":
+          description: <b>`OK`</b>
+components:
+  schemas:
+    GetAccountResponse:
+      $ref: '#/components/schemas/Account'
+    PostAccountRequest:
+      $ref: '#/components/schemas/Account'
+    PostAccountResponse:
+      type: object
+      properties:
+        accountNumber:
+          $ref: '#/components/schemas/AccountNumber'
+    PutAccountRequest:
+      $ref: '#/components/schemas/AccountUpdate'
+    PutAccountResponse:
+      type: object
+      properties:
+        accountNumber:
+          $ref: '#/components/schemas/AccountNumber'
+    GetMovementResponse:
+      $ref: '#/components/schemas/Movement'
+    PostMovementRequest:
+      $ref: '#/components/schemas/Movement'
+    PostMovementResponse:
+      type: object
+      properties:
+        movementId:
+          $ref: '#/components/schemas/MovementId'
+    AccountUpdate:
+      type: object
+      properties:
+        accountType:
+          $ref: '#/components/schemas/AccountType'
+        openingBalance:
+          $ref: '#/components/schemas/OpeningBalance'
+        status:
+          $ref: '#/components/schemas/Status'
+    Account:
+      title: account
+      type: object
+      properties:
+        accountNumber:
+          $ref: '#/components/schemas/AccountNumber'
+        accountType:
+          $ref: '#/components/schemas/AccountType'
+        openingBalance:
+          $ref: '#/components/schemas/OpeningBalance'
+        status:
+          $ref: '#/components/schemas/Status'
+      description: account
+    Movement:
+      title: movement
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/Amount'
+        movementType:
+          $ref: '#/components/schemas/MovementType'
+        balance:
+          $ref: '#/components/schemas/Balance'
+        date:
+          $ref: '#/components/schemas/MovementDate'
+      description: movement
+    AccountNumber:
+      title: accountNumber
+      maxLength: 30
+      minLength: 0
+      type: string
+      description: account number
+      example: "2203767188"
+    AccountType:
+      title: accountType
+      maxLength: 20
+      minLength: 0
+      type: string
+      description: account type
+      example: ahorros
+    MovementId:
+      title: movementId
+      maxLength: 36
+      minLength: 0
+      type: string
+      description: Movement id
+      example: a10bae03-279d-4724-ba5b-bd1353f87295
+    OpeningBalance:
+      title: openingBalance
+      minimum: 0
+      type: number
+      description: opening balance
+      example: 1400
+    Status:
+      title: status
+      maxLength: 20
+      minLength: 0
+      type: string
+      description: account status
+      example: activa
+    MovementDate:
+      title: date
+      type: string
+      description: Movement date
+      format: date-time
+      example: 2022-03-16T00:00:00Z
+    MovementType:
+      title: movementType
+      maxLength: 20
+      minLength: 0
+      type: string
+      description: Movement type
+      example: deposit
+    Amount:
+      title: amount
+      minimum: 0
+      type: number
+      description: Movement amount
+      example: 550
+    Balance:
+      title: balance
+      minimum: 0
+      type: number
+      description: Movement balance
+      example: 2300
+  parameters:
+    AccountNumber:
+      name: accountNumber
+      in: query
+      description: Account number
+      required: true
+      style: form
+      explode: true
+      schema:
+        type: string
+        example: "2203767188"
+    MovementId:
+      name: movementId
+      in: query
+      description: Movement id
+      required: true
+      style: form
+      explode: true
+      schema:
+        type: string
+        example: a10bae03-279d-4724-ba5b-bd1353f87295
+    AccountId:
+      name: accountNumber
+      in: path
+      description: Account identification
+      required: true
+      style: simple
+      explode: false
+      schema:
+        maxLength: 30
+        minLength: 0
+        type: string
+        example: "2203767188"
+    IdMovement:
+      name: movementId
+      in: path
+      description: Movement identification
+      required: true
+      style: simple
+      explode: false
+      schema:
+        maxLength: 36
+        minLength: 0
+        type: string
+        example: a10bae03-279d-4724-ba5b-bd1353f87295

@@ -1,0 +1,257 @@
+openapi: 3.0.0
+info:
+  title: API | daniesteb | Customer
+  description: Api to manage customers
+  contact:
+    name: daniesteb - Daniel Jimenez
+    email: danielejimeneza@gmail.com
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/ded/v1
+    description: Development
+tags:
+  - name: Customer
+    description: Customer controller
+paths:
+  /customers:
+    get:
+      tags:
+        - Customer
+      summary: Get customer
+      description: |
+        Search for customer information
+      operationId: getCustomer
+      parameters:
+        - name: id
+          in: query
+          description: customer id
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: "1725374134"
+      responses:
+        "200":
+          description: <b>`OK`</b>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCustomerResponse'
+    post:
+      tags:
+        - Customer
+      summary: Create customer
+      description: |
+        Create new customer
+      operationId: postCustomer
+      requestBody:
+        description: Customer to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostCustomerRequest'
+      responses:
+        "201":
+          description: <b>`Created`</b>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostCustomerResponse'
+              examples:
+                PostCustomerResponse:
+                  $ref: '#/components/examples/PostCustomerResponse'
+  /customers/{id}:
+    put:
+      tags:
+        - Customer
+      summary: Update customer
+      description: |
+        Update customer
+      operationId: putCustomer
+      parameters:
+        - name: id
+          in: path
+          description: Customer identification
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: Customer to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutCustomerRequest'
+      responses:
+        "200":
+          description: <b>`OK`</b>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutCustomerResponse'
+              examples:
+                PutCustomerResponse:
+                  $ref: '#/components/examples/PutCustomerResponse'
+    delete:
+      tags:
+        - Customer
+      summary: Delete customer
+      description: |
+        Delete customer
+      operationId: deleteCustomer
+      parameters:
+        - name: id
+          in: path
+          description: Customer identification
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: <b>`OK`</b>
+components:
+  schemas:
+    GetCustomerResponse:
+      $ref: '#/components/schemas/Customer'
+    PostCustomerRequest:
+      $ref: '#/components/schemas/Customer'
+    PostCustomerResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+    PutCustomerRequest:
+      $ref: '#/components/schemas/CustomerUpdate'
+    PutCustomerResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+    Id:
+      title: id
+      maxLength: 30
+      minLength: 0
+      type: string
+      description: customer id
+      example: "1725374134"
+    Name:
+      title: name
+      maxLength: 100
+      minLength: 0
+      type: string
+      description: customer name
+      example: Daniel Jimenez
+    Gender:
+      title: gender
+      maxLength: 20
+      minLength: 0
+      type: string
+      description: Person gender
+      example: masculino
+    Age:
+      title: age
+      maximum: 200
+      minimum: 0
+      type: integer
+      description: age
+      example: 65
+    Address:
+      title: address
+      maxLength: 300
+      minLength: 0
+      type: string
+      description: address
+      example: Carceln E9 N90-62
+    Phone:
+      title: phone
+      maxLength: 20
+      minLength: 0
+      type: string
+      description: customer phone number
+    Password:
+      title: password
+      maxLength: 50
+      minLength: 0
+      type: string
+      description: customer password
+    Status:
+      title: status
+      type: string
+      description: customer status
+    CustomerUpdate:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/Name'
+        gender:
+          $ref: '#/components/schemas/Gender'
+        age:
+          $ref: '#/components/schemas/Age'
+        address:
+          $ref: '#/components/schemas/Address'
+        phone:
+          $ref: '#/components/schemas/Phone'
+        password:
+          $ref: '#/components/schemas/Password'
+        status:
+          $ref: '#/components/schemas/Status'
+    Customer:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        name:
+          $ref: '#/components/schemas/Name'
+        gender:
+          $ref: '#/components/schemas/Gender'
+        age:
+          $ref: '#/components/schemas/Age'
+        address:
+          $ref: '#/components/schemas/Address'
+        phone:
+          $ref: '#/components/schemas/Phone'
+        password:
+          $ref: '#/components/schemas/Password'
+        status:
+          $ref: '#/components/schemas/Status'
+  parameters:
+    CustomerId:
+      name: id
+      in: query
+      description: customer id
+      required: true
+      style: form
+      explode: true
+      schema:
+        type: string
+        example: "1725374134"
+    Id:
+      name: id
+      in: path
+      description: Customer identification
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+  examples:
+    GetCustomerResponse:
+      value:
+        id: "1725374134"
+        name: Daniel Jimenez
+        gender: masculino
+        age: 65
+        address: Carceln E9 N90-62
+        phone: "0998320367"
+        password: '*********'
+        status: activo
+    PostCustomerResponse:
+      value:
+        id: 1725374134
+    PutCustomerResponse:
+      value:
+        id: 1725374134
