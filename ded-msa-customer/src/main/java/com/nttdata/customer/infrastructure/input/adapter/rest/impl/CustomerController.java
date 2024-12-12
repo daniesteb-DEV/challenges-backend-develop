@@ -39,6 +39,7 @@ public class CustomerController implements CustomersApi {
     @Override
     public Mono<ResponseEntity<PostCustomerResponse>> postCustomer(Customer body,
                                                                    ServerWebExchange exchange) {
+        log.info("|-> [controller] postCustomer start ");
         return customerServicePort.registerCustomer(customerMapper.toCustomer(body))
                                   .map(customerMapper::toPostCustomerResponse)
                                   .map(ResponseEntity::ok);

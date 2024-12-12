@@ -38,6 +38,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetCustomerResponse'
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "405":
+          $ref: '#/components/responses/MethodNotAllowed'
+        "409":
+          $ref: '#/components/responses/Conflict'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+        "504":
+          $ref: '#/components/responses/GatewayTimeout'
     post:
       tags:
         - Customer
@@ -61,6 +79,24 @@ paths:
               examples:
                 PostCustomerResponse:
                   $ref: '#/components/examples/PostCustomerResponse'
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "405":
+          $ref: '#/components/responses/MethodNotAllowed'
+        "409":
+          $ref: '#/components/responses/Conflict'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+        "504":
+          $ref: '#/components/responses/GatewayTimeout'
   /customers/{id}:
     put:
       tags:
@@ -94,6 +130,24 @@ paths:
               examples:
                 PutCustomerResponse:
                   $ref: '#/components/examples/PutCustomerResponse'
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "405":
+          $ref: '#/components/responses/MethodNotAllowed'
+        "409":
+          $ref: '#/components/responses/Conflict'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+        "504":
+          $ref: '#/components/responses/GatewayTimeout'
     delete:
       tags:
         - Customer
@@ -113,6 +167,24 @@ paths:
       responses:
         "200":
           description: <b>`OK`</b>
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "405":
+          $ref: '#/components/responses/MethodNotAllowed'
+        "409":
+          $ref: '#/components/responses/Conflict'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+        "504":
+          $ref: '#/components/responses/GatewayTimeout'
 components:
   schemas:
     GetCustomerResponse:
@@ -218,6 +290,163 @@ components:
           $ref: '#/components/schemas/Password'
         status:
           $ref: '#/components/schemas/Status'
+    ErrorModel:
+      type: object
+      properties:
+        title:
+          maximum: 50
+          type: string
+          description: |-
+            <sup><i>(ES)</i></sup> Mensaje de error técnico.
+            <br>
+            <sup><i>(EN)</i></sup> Technical error message
+          example: Internal Server.
+        detail:
+          maximum: 50
+          type: string
+          description: |-
+            <sup><i>(ES)</i></sup> Mensaje a presentar al cliente, o error a detalle del evento
+            <br>
+            <sup><i>(EN)</i></sup> Message to display to the client, or error detailing the event
+          example: "Se produjo un error interno, lo estamos revisando."
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorList'
+        instance:
+          maximum: 50
+          type: string
+          description: |-
+            <sup><i>(ES)</i></sup> Código de catálogo de errores o Una referencia URI que identifique específicamente la aparición del problema.
+            <br>
+            <sup><i>(EN)</i></sup> Bug Catalog Code o A URI reference that specifically identifies the occurrence of the problem.
+          example: "0188"
+        type:
+          maximum: 100
+          type: string
+          description: |-
+            <sup><i>(ES)</i></sup> Una referencia URI que identifica el tipo de problema.
+            <br>
+            <sup><i>(EN)</i></sup> A URI reference that identifies the type of problem.
+          example: /v1/name/pathSuffix
+        resource:
+          type: string
+          description: |-
+            <sup><i>(ES)</i></sup> Recurso, Clase u objeto donde se genero el error.
+            <br>
+            <sup><i>(EN)</i></sup> Resource, Class or object where the error was generated.
+          example: UMPClientes0020/ConsultaInformacionCliente01
+        component:
+          type: string
+          description: |-
+            <sup><i>(ES)</i></sup> Componente de la aplicación o transacción.
+            <br>
+            <sup><i>(EN)</i></sup> Application component or transaction.
+          example: TX067050
+        backend:
+          type: string
+          description: |-
+            <sup><i>(ES)</i></sup> Código backend.
+            <br>
+            <sup><i>(EN)</i></sup> Backend code..
+          example: "00045"
+      x-reference: https://pichincha.atlassian.net/wiki/spaces/CDSRL/pages/3102507010/Librer+a+para+manejo+de+Excepciones#Captura-de-errores
+    ErrorList:
+      properties:
+        code:
+          type: string
+          description: |-
+            <sup><i>(ES)</i></sup> Código de catálogo de errores.
+            <br>
+            <sup><i>(EN)</i></sup> Error catalog code.
+          example: "001"
+        message:
+          type: string
+          description: |-
+            <sup><i>(ES)</i></sup> Mensaje de error técnico.
+            <br>
+            <sup><i>(EN)</i></sup> Technical error message..
+          example: Bad Request
+        businessMessage:
+          type: string
+          description: |-
+            <sup><i>(ES)</i></sup> Mensaje de negocio.
+            <br>
+            <sup><i>(EN)</i></sup> Business message.
+          example: The xyz field is mandatory
+  responses:
+    BadRequest:
+      description: |-
+        <b>`Bad Request`</b><br><br>
+        The request could not be understood by the server due to malformed syntax. The client SHOULD NOT repeat the request without modifications.
+      content:
+        application/json;charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    Unauthorized:
+      description: |-
+        <b>`Unauthorized`</b><br><br>
+        The request requires user authentication.
+      content:
+        application/json;charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    Forbidden:
+      description: |-
+        <b>`Forbidden`</b><br><br>
+        The server understood the request, but is refusing to fulfill it. Authorization will not help and the request SHOULD NOT be repeated.
+      content:
+        application/json;charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    NotFound:
+      description: |-
+        <b>`Not Found`</b><br><br>
+        The server has not found anything matching the Request-URI.
+      content:
+        application/json;charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    MethodNotAllowed:
+      description: |-
+        <b>`Method Not Allowed`</b><br><br>
+        The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.
+      content:
+        application/json;charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    Conflict:
+      description: |-
+        <b>`Conflict`</b><br><br>
+        The request could not be completed due to a conflict with the current state of the resource.
+      content:
+        application/json;charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    TooManyRequests:
+      description: |-
+        <b>`Too Many Requests`</b><br><br>
+        Indicates that the user has sent too many requests in a given amount of time ("rate limiting").
+      content:
+        application/json;charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    InternalServerError:
+      description: |-
+        <b>`Internal Server Error`</b><br><br>
+        The server encountered an unexpected condition which prevented it from fulfilling the request.
+      content:
+        application/json;charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    GatewayTimeout:
+      description: |-
+        <b>`Gateway Timeout`</b><br><br>
+        The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server.
+      content:
+        application/json;charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
   parameters:
     CustomerId:
       name: id
