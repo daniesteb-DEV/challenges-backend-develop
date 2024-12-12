@@ -3,7 +3,6 @@ package com.nttdata.customer.infrastructure.output.repository.impl;
 import com.nttdata.customer.infrastructure.output.repository.CustomerRepository;
 import com.nttdata.customer.infrastructure.output.repository.PostgresCustomerRepository;
 import com.nttdata.customer.infrastructure.output.repository.entity.CustomerEntity;
-import com.nttdata.customer.infrastructure.output.repository.entity.PersonEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
