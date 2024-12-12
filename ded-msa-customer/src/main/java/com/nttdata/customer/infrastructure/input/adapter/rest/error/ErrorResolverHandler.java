@@ -2,6 +2,7 @@ package com.nttdata.customer.infrastructure.input.adapter.rest.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nttdata.customer.infrastructure.exception.FailureException;
+import com.nttdata.customer.infrastructure.exception.NotFoundEntityException;
 import com.nttdata.customer.infrastructure.input.adapter.rest.error.resolver.ConstraintViolationExceptionResolver;
 import com.nttdata.customer.infrastructure.input.adapter.rest.error.resolver.ErrorResolver;
 import com.nttdata.customer.infrastructure.input.adapter.rest.error.resolver.NotFoundErrorResolver;
@@ -49,6 +50,7 @@ public class ErrorResolverHandler implements ErrorWebExceptionHandler {
     );
     resolvers.put(WebExchangeBindException.class, new WebExchangeBindExceptionResolver());
     resolvers.put(ServerWebInputException.class, new ServerWebInputExceptionResolver());
+    resolvers.put(NotFoundEntityException.class, new NotFoundErrorResolver());
   }
 
   @NonNull

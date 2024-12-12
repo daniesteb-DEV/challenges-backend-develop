@@ -2,6 +2,7 @@ package com.nttdata.customer.infrastructure.output.adapter;
 
 import com.nttdata.customer.application.output.port.RepositoryServicePort;
 import com.nttdata.customer.domain.Customer;
+import com.nttdata.customer.infrastructure.exception.NotFoundEntityException;
 import com.nttdata.customer.infrastructure.output.repository.PostgresCustomerRepository;
 import com.nttdata.customer.infrastructure.output.repository.PostgresPersonRepository;
 import com.nttdata.customer.infrastructure.output.repository.entity.CustomerEntity;
@@ -17,95 +18,98 @@ import reactor.core.scheduler.Schedulers;
 @Slf4j
 public class PostgresServiceAdapter implements RepositoryServicePort {
 
-    private final PostgresCustomerRepository customerRepository;
-    private final PostgresPersonRepository personRepository;
-    private final CustomerMapper customerMapper;
+  private final PostgresCustomerRepository customerRepository;
+  private final PostgresPersonRepository personRepository;
+  private final CustomerMapper customerMapper;
 
-    @Override
-    public Mono<Customer> findCustomerByPersonId(String personId) {
-        log.info("|-> [output-adapter] findCustomerByPersonId start ");
-        return personRepository.findByIdentification(personId)
-                               .flatMap(personEntity -> Mono.zip(
-                                                customerRepository.findByPersonId(personEntity.getId()),
-                                                Mono.just(personEntity)
-                                        )
-                               )
-                               .map(tupleObjects -> customerMapper.toCustomer(tupleObjects.getT1(),
-                                                                              tupleObjects.getT2()
-                                    )
-                               )
-                               .doOnSuccess(response -> log.info(
-                                                    "|-> [output-adapter] findCustomerByPersonId finished successfully"
-                                            )
-                               )
-                               .doOnError(error -> log.error(
-                                       "|-> [output-adapter] findCustomerByPersonId finished with error. ErrorDetail: {}",
-                                       error.getMessage())
-                               );
-    }
+  @Override
+  public Mono<Customer> findCustomerByPersonId(String personId) {
+    log.info("|-> [output-adapter] findCustomerByPersonId start ");
+    return personRepository.findByIdentification(personId)
+        .switchIfEmpty(Mono.error(new NotFoundEntityException("Person")))
+        .flatMap(personEntity -> Mono.zip(
+                     customerRepository.findByPersonId(personEntity.getId()),
+                     Mono.just(personEntity)
+                 )
+        )
+        .map(tupleObjects -> customerMapper.toCustomer(
+                 tupleObjects.getT1(),
+                 tupleObjects.getT2()
+             )
+        )
+        .doOnSuccess(response -> log.info(
+                         "|-> [output-adapter] findCustomerByPersonId finished successfully"
+                     )
+        )
+        .doOnError(error -> log.error(
+                       "|-> [output-adapter] findCustomerByPersonId finished with error. ErrorDetail: {}",
+                       error.getMessage()
+                   )
+        );
+  }
 
-    @Override
-    public Mono<Customer> saveCustomer(Customer customer) {
-        return personRepository.save(customerMapper.toPersonEntity(customer))
-                               .flatMap(personEntity -> {
-                                            CustomerEntity customerEntity = customerMapper.toCustomerEntity(
-                                                    customer
-                                            );
-                                            customerEntity.setPersonId(personEntity.getId());
-                                            return Mono.zip(customerRepository.save(customerEntity), Mono.just(personEntity));
-                                        }
-                               )
-                               .map(tupleObjects -> customerMapper.toCustomer(
-                                            tupleObjects.getT1(),
-                                            tupleObjects.getT2()
-                                    )
-                               );
-    }
+  @Override
+  public Mono<Customer> saveCustomer(Customer customer) {
+    return personRepository.save(customerMapper.toPersonEntity(customer))
+        .flatMap(personEntity -> {
+                   CustomerEntity customerEntity = customerMapper.toCustomerEntity(
+                       customer
+                   );
+                   customerEntity.setPersonId(personEntity.getId());
+                   return Mono.zip(customerRepository.save(customerEntity), Mono.just(personEntity));
+                 }
+        )
+        .map(tupleObjects -> customerMapper.toCustomer(
+                 tupleObjects.getT1(),
+                 tupleObjects.getT2()
+             )
+        );
+  }
 
-    @Override
-    public Mono<Customer> updateCustomer(Customer customer, String personId) {
-        return findCustomerByPersonId(personId).map(customerResponse -> {
-                                                        customerMapper.updateCustomer(
-                                                                customer,
-                                                                customerResponse
-                                                        );
-                                                        return customer;
-                                                    }
-                                               )
-                                               .flatMap(customerUpdated -> personRepository.save(
-                                                                                                   customerMapper.toPersonEntity(customerUpdated)
-                                                                                           )
-                                                                                           .flatMap(
-                                                                                                   personEntity -> customerRepository.save(
-                                                                                                                                             customerMapper.toCustomerEntity(
-                                                                                                                                                     customerUpdated)
-                                                                                                                                     )
-                                                                                                                                     .map(customerEntity -> customerMapper.toCustomer(
-                                                                                                                                                  customerEntity,
-                                                                                                                                                  personEntity
-                                                                                                                                          )
-                                                                                                                                     )
-                                                                                           )
-                                               );
-    }
+  @Override
+  public Mono<Customer> updateCustomer(Customer customer, String personId) {
+    return findCustomerByPersonId(personId).map(customerResponse -> {
+                                                  customerMapper.updateCustomer(
+                                                      customer,
+                                                      customerResponse
+                                                  );
+                                                  return customer;
+                                                }
+        )
+        .flatMap(customerUpdated -> personRepository.save(
+                         customerMapper.toPersonEntity(customerUpdated)
+                     )
+                     .flatMap(
+                         personEntity -> customerRepository.save(
+                                 customerMapper.toCustomerEntity(
+                                     customerUpdated)
+                             )
+                             .map(customerEntity -> customerMapper.toCustomer(
+                                      customerEntity,
+                                      personEntity
+                                  )
+                             )
+                     )
+        );
+  }
 
-    @Override
-    public Mono<Boolean> deleteCustomer(String personId) {
-        return personRepository.findByIdentification(personId)
-                               .flatMap(personEntity -> customerRepository.findByPersonId(personEntity.getId()))
-                               .publishOn(Schedulers.boundedElastic())
-                               .map(customerEntity -> {
-                                        customerRepository.delete(
-                                                                  customerEntity.getId()
-                                                          )
-                                                          .subscribe();
-                                        return customerEntity;
-                                    }
-                               )
-                               .flatMap(customerEntity -> personRepository.delete(
-                                                customerEntity.getId()
-                                        )
-                               )
-                               .then(Mono.fromCallable(() -> true));
-    }
+  @Override
+  public Mono<Boolean> deleteCustomer(String personId) {
+    return personRepository.findByIdentification(personId)
+        .flatMap(personEntity -> customerRepository.findByPersonId(personEntity.getId()))
+        .publishOn(Schedulers.boundedElastic())
+        .map(customerEntity -> {
+               customerRepository.delete(
+                       customerEntity.getId()
+                   )
+                   .subscribe();
+               return customerEntity;
+             }
+        )
+        .flatMap(customerEntity -> personRepository.delete(
+                     customerEntity.getId()
+                 )
+        )
+        .then(Mono.fromCallable(() -> true));
+  }
 }

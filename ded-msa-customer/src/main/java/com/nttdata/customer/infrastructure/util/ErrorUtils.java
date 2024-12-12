@@ -11,7 +11,7 @@ public final class ErrorUtils {
 
     @NonNull
     public static String buildErrorCode(final int status) {
-        return String.format("SP-%d", status);
+        return String.format("%d", status);
     }
 
     @NonNull
