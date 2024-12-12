@@ -13,25 +13,31 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class CustomerService implements CustomerServicePort {
 
-  private final RepositoryServicePort repositoryServicePort;
+    private final RepositoryServicePort repositoryServicePort;
 
-  @Override
-  public Mono<Customer> getCustomer(String customerId) {
-    return repositoryServicePort.findCustomerByPersonId(customerId);
-  }
+    @Override
+    public Mono<Customer> getCustomer(String customerId) {
+        log.info("|-> [service] getCustomer start ");
+        return repositoryServicePort.findCustomerByPersonId(customerId)
+                                    .doOnSuccess(response -> log.info("|-> [service] getCustomer finished successfully"))
+                                    .doOnError(error -> log.error(
+                                            "|-> [service] getCustomer finished with error. ErrorDetail: {}",
+                                            error.getMessage())
+                                    );
+    }
 
-  @Override
-  public Mono<Customer> registerCustomer(Customer customer) {
-    return repositoryServicePort.saveCustomer(customer);
-  }
+    @Override
+    public Mono<Customer> registerCustomer(Customer customer) {
+        return repositoryServicePort.saveCustomer(customer);
+    }
 
-  @Override
-  public Mono<Customer> updateCustomer(Customer customer, String personId) {
-    return repositoryServicePort.updateCustomer(customer, personId);
-  }
+    @Override
+    public Mono<Customer> updateCustomer(Customer customer, String personId) {
+        return repositoryServicePort.updateCustomer(customer, personId);
+    }
 
-  @Override
-  public Mono<Boolean> deleteCustomer(String personId) {
-    return repositoryServicePort.deleteCustomer(personId);
-  }
+    @Override
+    public Mono<Boolean> deleteCustomer(String personId) {
+        return repositoryServicePort.deleteCustomer(personId);
+    }
 }

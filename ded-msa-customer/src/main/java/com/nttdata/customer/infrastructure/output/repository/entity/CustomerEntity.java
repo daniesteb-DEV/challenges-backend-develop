@@ -24,11 +24,11 @@ import org.springframework.data.relational.core.mapping.Table;
 public class CustomerEntity {
 
   @Id
-  Long id;
-  @Column("person_id")
-  PersonEntity personId;
-  @Column("password")
-  String password;
-  @Column("status")
-  String status;
+  public Long id;
+  @Column(value = "person_id")
+  public Long personId;
+  @Column(value = "password")
+  public String password;
+  @Column(value = "status")
+  public String status;
 }

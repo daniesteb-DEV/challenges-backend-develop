@@ -15,22 +15,29 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class PostgresCustomerRepositoryImpl implements PostgresCustomerRepository {
 
-  private final CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
-  @Override
-  public Mono<CustomerEntity> findByPersonId(String personId) {
-    return customerRepository.findByPersonId(PersonEntity.builder().id(personId).build());
-  }
+    @Override
+    public Mono<CustomerEntity> findByPersonId(Long personId) {
+        return customerRepository.findByPersonId(personId);
+    }
 
-  @Transactional
-  @Override
-  public Mono<CustomerEntity> save(CustomerEntity customerEntity) {
-    return customerRepository.save(customerEntity);
-  }
+    @Transactional
+    @Override
+    public Mono<CustomerEntity> save(CustomerEntity customerEntity) {
+        log.info("|-> [repository] saveCustomer start");
+        return customerRepository.save(customerEntity)
+                                 .doOnSuccess(response -> log.info(
+                                         "|-> [repository] saveCustomer finished successfully."))
+                                 .doOnError(error -> log.error(
+                                         "|-> [repository] saveCustomer finished with error. ErrorDetail: {}",
+                                         error.getMessage())
+                                 );
+    }
 
-  @Transactional
-  @Override
-  public Mono<Void> delete(Long id) {
-    return customerRepository.deleteById(id);
-  }
+    @Transactional
+    @Override
+    public Mono<Void> delete(Long id) {
+        return customerRepository.deleteById(id);
+    }
 }

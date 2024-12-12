@@ -5,10 +5,10 @@ import reactor.core.publisher.Mono;
 
 public interface PostgresPersonRepository {
 
-  Mono<PersonEntity> findById(String id);
+  Mono<PersonEntity> findByIdentification(String personId);
 
   Mono<PersonEntity> save(PersonEntity personEntity);
 
-  Mono<Void> delete(String id);
+  Mono<Void> delete(Long id);
 
 }

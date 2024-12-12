@@ -12,16 +12,18 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 public class PersonEntity {
-  @Id
-  String id;
-  @Column("name")
-  String name;
-  @Column("gender")
-  String gender;
-  @Column("age")
-  int age;
-  @Column("address")
-  String address;
-  @Column("phone")
-  String phone;
+    @Id
+    public Long id;
+    @Column(value = "identification")
+    public String identification;
+    @Column(value = "name")
+    public String name;
+    @Column(value = "gender")
+    public String gender;
+    @Column(value = "age")
+    public Integer age;
+    @Column(value = "address")
+    public String address;
+    @Column(value = "phone")
+    public String phone;
 }

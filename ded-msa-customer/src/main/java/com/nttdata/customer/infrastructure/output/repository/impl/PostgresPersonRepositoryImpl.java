@@ -14,22 +14,36 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class PostgresPersonRepositoryImpl implements PostgresPersonRepository {
 
-  private final PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
-  @Override
-  public Mono<PersonEntity> findById(String id) {
-    return personRepository.findById(id);
-  }
+    @Override
+    public Mono<PersonEntity> findByIdentification(String personId) {
+        log.info("|-> [output-adapter] findByIdentification start ");
+        return personRepository.findByIdentification(personId)
+                               .doOnSuccess(response -> log.info(
+                                       "|-> [output-adapter] findByIdentification finished successfully"))
+                               .doOnError(error -> log.error(
+                                                  "|-> [output-adapter] findByIdentification finished with error. ErrorDetail: {} ",
+                                                  error.getMessage()
+                                          )
+                               );
+    }
 
-  @Transactional
-  @Override
-  public Mono<PersonEntity> save(PersonEntity personEntity) {
-    return personRepository.save(personEntity);
-  }
+    @Transactional
+    @Override
+    public Mono<PersonEntity> save(PersonEntity personEntity) {
+        log.info("|-> [repository] savePerson start");
+        return personRepository.save(personEntity)
+                               .doOnSuccess(response -> log.info("|-> [repository] savePerson finished successfully."))
+                               .doOnError(error -> log.error(
+                                       "|-> [repository] savePerson finished with error. ErrorDetail: {}",
+                                       error.getMessage())
+                               );
+    }
 
-  @Transactional
-  @Override
-  public Mono<Void> delete(String id) {
-    return personRepository.deleteById(id);
-  }
+    @Transactional
+    @Override
+    public Mono<Void> delete(Long id) {
+        return personRepository.deleteById(id);
+    }
 }
