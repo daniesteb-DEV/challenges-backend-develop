@@ -20,40 +20,61 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Validated
 public class CustomerController implements CustomersApi {
-    private final CustomerServicePort customerServicePort;
-    private final CustomerControllerMapper customerMapper;
 
-    @Override
-    public Mono<ResponseEntity<Customer>> getCustomer(String id, ServerWebExchange exchange) {
-        log.info("|-> [controller] getCustomer start ");
-        return customerServicePort.getCustomer(id)
-                                  .map(customerMapper::toCustomer)
-                                  .map(ResponseEntity::ok)
-                                  .doOnSuccess(response -> log.info("|-> [controller] getCustomer finished successfully"))
-                                  .doOnError(error -> log.error(
-                                          "|-> [controller] getCustomer finished with error. ErrorDetail: {}",
-                                          error.getMessage())
-                                  );
-    }
+  private final CustomerServicePort customerServicePort;
+  private final CustomerControllerMapper customerMapper;
 
-    @Override
-    public Mono<ResponseEntity<PostCustomerResponse>> postCustomer(Customer body,
-                                                                   ServerWebExchange exchange) {
-        log.info("|-> [controller] postCustomer start ");
-        return customerServicePort.registerCustomer(customerMapper.toCustomer(body))
-                                  .map(customerMapper::toPostCustomerResponse)
-                                  .map(ResponseEntity::ok);
-    }
+  @Override
+  public Mono<ResponseEntity<Customer>> getCustomer(String id, ServerWebExchange exchange) {
+    log.info("|-> [controller] getCustomer start ");
+    return customerServicePort.getCustomer(id)
+        .map(customerMapper::toCustomer)
+        .map(ResponseEntity::ok)
+        .doOnSuccess(response -> log.info("|-> [controller] getCustomer finished successfully"))
+        .doOnError(error -> log.error(
+                       "|-> [controller] getCustomer finished with error. ErrorDetail: {}",
+                       error.getMessage()
+                   )
+        );
+  }
 
-    @Override
-    public Mono<ResponseEntity<PutCustomerResponse>> putCustomer(String id,
-                                                                 CustomerUpdate body,
+  @Override
+  public Mono<ResponseEntity<PostCustomerResponse>> postCustomer(Customer body,
                                                                  ServerWebExchange exchange) {
-        return null;
-    }
+    log.info("|-> [controller] postCustomer start ");
+    return customerServicePort.registerCustomer(customerMapper.toCustomer(body))
+        .map(customerMapper::toPostCustomerResponse)
+        .map(ResponseEntity::ok)
+        .doOnSuccess(response -> log.info("|-> [controller] postCustomer finished successfully"))
+        .doOnError(error -> log.error(
+                       "|-> [controller] postCustomer finished with error. ErrorDetail: {}",
+                       error.getMessage()
+                   )
+        );
+  }
 
-    @Override
-    public Mono<ResponseEntity<Void>> deleteCustomer(String id, ServerWebExchange exchange) {
-        return null;
-    }
+  @Override
+  public Mono<ResponseEntity<PutCustomerResponse>> putCustomer(String id,
+                                                               CustomerUpdate body,
+                                                               ServerWebExchange exchange) {
+    log.info("|-> [controller] putCustomer start ");
+    return customerServicePort.updateCustomer(customerMapper.toCustomer(body), id)
+        .map(customerMapper::toPutCustomerResponse)
+        .map(ResponseEntity::ok)
+        .doOnSuccess(response -> log.info("|-> [controller] putCustomer finished successfully"))
+        .doOnError(error -> log.error(
+                       "|-> [controller] putCustomer finished with error. ErrorDetail: {}",
+                       error.getMessage()
+                   )
+        );
+  }
+
+  @Override
+  public Mono<ResponseEntity<Void>> deleteCustomer(String id, ServerWebExchange exchange) {
+    log.info("|-> [controller] deleteCustomer start ");
+    return customerServicePort.deleteCustomer(
+            id
+        )
+        .map(aBoolean -> ResponseEntity.ok().<Void>build());
+  }
 }

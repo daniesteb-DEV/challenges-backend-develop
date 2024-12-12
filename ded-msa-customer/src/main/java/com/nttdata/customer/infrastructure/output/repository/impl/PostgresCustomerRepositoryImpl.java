@@ -1,5 +1,6 @@
 package com.nttdata.customer.infrastructure.output.repository.impl;
 
+import com.nttdata.customer.infrastructure.exception.NotFoundEntityException;
 import com.nttdata.customer.infrastructure.output.repository.CustomerRepository;
 import com.nttdata.customer.infrastructure.output.repository.PostgresCustomerRepository;
 import com.nttdata.customer.infrastructure.output.repository.entity.CustomerEntity;
@@ -14,29 +15,31 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class PostgresCustomerRepositoryImpl implements PostgresCustomerRepository {
 
-    private final CustomerRepository customerRepository;
+  private final CustomerRepository customerRepository;
 
-    @Override
-    public Mono<CustomerEntity> findByPersonId(Long personId) {
-        return customerRepository.findByPersonId(personId);
-    }
+  @Override
+  public Mono<CustomerEntity> findByPersonId(Long personId) {
+    return customerRepository.findByPersonId(personId)
+        .switchIfEmpty(Mono.error(new NotFoundEntityException("Customer")));
+  }
 
-    @Transactional
-    @Override
-    public Mono<CustomerEntity> save(CustomerEntity customerEntity) {
-        log.info("|-> [repository] saveCustomer start");
-        return customerRepository.save(customerEntity)
-                                 .doOnSuccess(response -> log.info(
-                                         "|-> [repository] saveCustomer finished successfully."))
-                                 .doOnError(error -> log.error(
-                                         "|-> [repository] saveCustomer finished with error. ErrorDetail: {}",
-                                         error.getMessage())
-                                 );
-    }
+  @Transactional
+  @Override
+  public Mono<CustomerEntity> save(CustomerEntity customerEntity) {
+    log.info("|-> [repository] saveCustomer start");
+    return customerRepository.save(customerEntity)
+        .doOnSuccess(response -> log.info(
+            "|-> [repository] saveCustomer finished successfully."))
+        .doOnError(error -> log.error(
+                       "|-> [repository] saveCustomer finished with error. ErrorDetail: {}",
+                       error.getMessage()
+                   )
+        );
+  }
 
-    @Transactional
-    @Override
-    public Mono<Void> delete(Long id) {
-        return customerRepository.deleteById(id);
-    }
+  @Transactional
+  @Override
+  public Mono<Void> delete(Long id) {
+    return customerRepository.deleteById(id);
+  }
 }

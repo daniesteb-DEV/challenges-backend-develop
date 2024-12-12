@@ -2,7 +2,6 @@ package com.nttdata.customer.infrastructure.output.adapter;
 
 import com.nttdata.customer.application.output.port.RepositoryServicePort;
 import com.nttdata.customer.domain.Customer;
-import com.nttdata.customer.infrastructure.exception.NotFoundEntityException;
 import com.nttdata.customer.infrastructure.output.repository.PostgresCustomerRepository;
 import com.nttdata.customer.infrastructure.output.repository.PostgresPersonRepository;
 import com.nttdata.customer.infrastructure.output.repository.entity.CustomerEntity;
@@ -26,7 +25,6 @@ public class PostgresServiceAdapter implements RepositoryServicePort {
   public Mono<Customer> findCustomerByPersonId(String personId) {
     log.info("|-> [output-adapter] findCustomerByPersonId start ");
     return personRepository.findByIdentification(personId)
-        .switchIfEmpty(Mono.error(new NotFoundEntityException("Person")))
         .flatMap(personEntity -> Mono.zip(
                      customerRepository.findByPersonId(personEntity.getId()),
                      Mono.just(personEntity)
@@ -50,6 +48,7 @@ public class PostgresServiceAdapter implements RepositoryServicePort {
 
   @Override
   public Mono<Customer> saveCustomer(Customer customer) {
+    log.info("|-> [output-adapter] saveCustomer start ");
     return personRepository.save(customerMapper.toPersonEntity(customer))
         .flatMap(personEntity -> {
                    CustomerEntity customerEntity = customerMapper.toCustomerEntity(
@@ -63,11 +62,21 @@ public class PostgresServiceAdapter implements RepositoryServicePort {
                  tupleObjects.getT1(),
                  tupleObjects.getT2()
              )
+        )
+        .doOnSuccess(response -> log.info(
+                         "|-> [output-adapter] saveCustomer finished successfully"
+                     )
+        )
+        .doOnError(error -> log.error(
+                       "|-> [output-adapter] saveCustomer finished with error. ErrorDetail: {}",
+                       error.getMessage()
+                   )
         );
   }
 
   @Override
   public Mono<Customer> updateCustomer(Customer customer, String personId) {
+    log.info("|-> [output-adapter] updateCustomer start ");
     return findCustomerByPersonId(personId).map(customerResponse -> {
                                                   customerMapper.updateCustomer(
                                                       customer,
@@ -90,11 +99,21 @@ public class PostgresServiceAdapter implements RepositoryServicePort {
                                   )
                              )
                      )
+        )
+        .doOnSuccess(response -> log.info(
+                         "|-> [output-adapter] updateCustomer finished successfully"
+                     )
+        )
+        .doOnError(error -> log.error(
+                       "|-> [output-adapter] updateCustomer finished with error. ErrorDetail: {}",
+                       error.getMessage()
+                   )
         );
   }
 
   @Override
   public Mono<Boolean> deleteCustomer(String personId) {
+    log.info("|-> [output-adapter] deleteCustomer start ");
     return personRepository.findByIdentification(personId)
         .flatMap(personEntity -> customerRepository.findByPersonId(personEntity.getId()))
         .publishOn(Schedulers.boundedElastic())
@@ -110,6 +129,15 @@ public class PostgresServiceAdapter implements RepositoryServicePort {
                      customerEntity.getId()
                  )
         )
-        .then(Mono.fromCallable(() -> true));
+        .then(Mono.fromCallable(() -> true))
+        .doOnSuccess(response -> log.info(
+                         "|-> [output-adapter] deleteCustomer finished successfully"
+                     )
+        )
+        .doOnError(error -> log.error(
+                       "|-> [output-adapter] deleteCustomer finished with error. ErrorDetail: {}",
+                       error.getMessage()
+                   )
+        );
   }
 }
