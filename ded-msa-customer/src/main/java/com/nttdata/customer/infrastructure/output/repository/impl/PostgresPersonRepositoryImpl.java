@@ -32,10 +32,6 @@ public class PostgresPersonRepositoryImpl implements PostgresPersonRepository {
                        "|-> [output-adapter] findByIdentification finished with error. ErrorDetail: {} ",
                        error.getMessage()
                    )
-        ).onErrorMap(throwable -> new CodeConflictException(
-                         buildErrorModel(throwable),
-                         HttpStatus.CONFLICT.value()
-                     )
         );
   }
 

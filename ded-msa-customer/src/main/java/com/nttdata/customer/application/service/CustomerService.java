@@ -3,6 +3,7 @@ package com.nttdata.customer.application.service;
 import com.nttdata.customer.application.input.port.CustomerServicePort;
 import com.nttdata.customer.application.output.port.RepositoryServicePort;
 import com.nttdata.customer.domain.Customer;
+import com.nttdata.customer.infrastructure.input.adapter.rest.mapper.CustomerControllerMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import reactor.core.publisher.Mono;
 public class CustomerService implements CustomerServicePort {
 
   private final RepositoryServicePort repositoryServicePort;
+  private final CustomerControllerMapper customerControllerMapper;
 
   @Override
   public Mono<Customer> getCustomer(String customerId) {
@@ -42,7 +44,16 @@ public class CustomerService implements CustomerServicePort {
   @Override
   public Mono<Customer> updateCustomer(Customer customer, String personId) {
     log.info("|-> [service] updateCustomer start ");
-    return repositoryServicePort.updateCustomer(customer, personId)
+    return repositoryServicePort.findCustomerByPersonId(personId)
+        .map(customerResponse -> {
+               customerControllerMapper.updateCustomer(
+                   customerResponse,
+                   customer
+               );
+               return customerResponse;
+             }
+        )
+        .flatMap(customerUpdated -> repositoryServicePort.updateCustomer(customerUpdated, personId))
         .doOnSuccess(response -> log.info("|-> [service] updateCustomer finished successfully"))
         .doOnError(error -> log.error(
                        "|-> [service] updateCustomer finished with error. ErrorDetail: {}",

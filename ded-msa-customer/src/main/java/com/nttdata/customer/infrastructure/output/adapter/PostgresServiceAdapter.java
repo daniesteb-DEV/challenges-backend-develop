@@ -77,28 +77,17 @@ public class PostgresServiceAdapter implements RepositoryServicePort {
   @Override
   public Mono<Customer> updateCustomer(Customer customer, String personId) {
     log.info("|-> [output-adapter] updateCustomer start ");
-    return findCustomerByPersonId(personId).map(customerResponse -> {
-                                                  customerMapper.updateCustomer(
-                                                      customer,
-                                                      customerResponse
-                                                  );
-                                                  return customer;
-                                                }
-        )
-        .flatMap(customerUpdated -> personRepository.save(
-                         customerMapper.toPersonEntity(customerUpdated)
+    return personRepository.save(customerMapper.toPersonEntity(customer))
+        .flatMap(
+            personEntity -> customerRepository.save(
+                    customerMapper.toCustomerEntity(
+                        customer)
+                )
+                .map(customerEntity -> customerMapper.toCustomer(
+                         customerEntity,
+                         personEntity
                      )
-                     .flatMap(
-                         personEntity -> customerRepository.save(
-                                 customerMapper.toCustomerEntity(
-                                     customerUpdated)
-                             )
-                             .map(customerEntity -> customerMapper.toCustomer(
-                                      customerEntity,
-                                      personEntity
-                                  )
-                             )
-                     )
+                )
         )
         .doOnSuccess(response -> log.info(
                          "|-> [output-adapter] updateCustomer finished successfully"
@@ -126,7 +115,7 @@ public class PostgresServiceAdapter implements RepositoryServicePort {
              }
         )
         .flatMap(customerEntity -> personRepository.delete(
-                     customerEntity.getId()
+                     customerEntity.getPersonId()
                  )
         )
         .then(Mono.fromCallable(() -> true))

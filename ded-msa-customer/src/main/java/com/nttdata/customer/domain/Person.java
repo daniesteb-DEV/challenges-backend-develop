@@ -16,7 +16,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Person {
 
-  String personId;
+  Long personId;
+  String Identification;
   String name;
   String gender;
   int age;
