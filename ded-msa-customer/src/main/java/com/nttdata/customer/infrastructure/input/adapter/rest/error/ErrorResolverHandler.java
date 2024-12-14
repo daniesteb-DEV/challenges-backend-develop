@@ -40,7 +40,6 @@ public class ErrorResolverHandler implements ErrorWebExceptionHandler {
   private String version;
   private final ObjectMapper mapper;
   private final UnexpectedErrorResolver unexpectedErrorResolver = new UnexpectedErrorResolver();
-  private final NotFoundErrorResolver notFoundErrorResolver = new NotFoundErrorResolver();
   private final Map<Class<? extends Throwable>, ErrorResolver> resolvers = new HashMap<>();
 
   @PostConstruct
