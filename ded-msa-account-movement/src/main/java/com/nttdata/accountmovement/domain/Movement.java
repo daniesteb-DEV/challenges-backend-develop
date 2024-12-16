@@ -1,6 +1,8 @@
 package com.nttdata.accountmovement.domain;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Generated;
@@ -17,7 +19,10 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Movement {
 
-  String movementId;
+  Long movementId;
+  String accountNumber;
+  String movementUuid;
+  LocalDateTime movementDate;
   BigDecimal amount;
   String movementType;
   BigDecimal balance;

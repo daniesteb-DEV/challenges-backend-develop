@@ -1,6 +1,6 @@
 package com.nttdata.accountmovement.domain;
 
-import java.math.BigDecimal;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Generated;
@@ -15,12 +15,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Generated
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Account {
-
-  Long accountId;
+public class MovementReport {
   String accountNumber;
-  String accountType;
-  BigDecimal openingBalance;
-  String status;
-  String customerId;
+  List<Movement> movements;
 }

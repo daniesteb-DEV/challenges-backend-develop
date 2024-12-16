@@ -8,6 +8,7 @@ import lombok.Generated;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
@@ -17,6 +18,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Builder
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Generated
@@ -25,6 +27,8 @@ public class AccountEntity {
 
   @Id
   @Column("id")
+  Long id;
+  @Column("account_number")
   String accountNumber;
   @Column("account_type")
   String accountType;
@@ -32,4 +36,6 @@ public class AccountEntity {
   BigDecimal openingBalance;
   @Column("status")
   String status;
+  @Column("customer_id")
+  String customerId;
 }

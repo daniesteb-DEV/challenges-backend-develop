@@ -19,6 +19,7 @@ public class PostgresCustomerRepositoryImpl implements PostgresCustomerRepositor
 
   @Override
   public Mono<CustomerEntity> findByPersonId(Long personId) {
+    log.info("|-> [repository] findByPersonId start");
     return customerRepository.findByPersonId(personId)
         .switchIfEmpty(Mono.error(new NotFoundEntityException("Customer")));
   }
@@ -40,6 +41,7 @@ public class PostgresCustomerRepositoryImpl implements PostgresCustomerRepositor
   @Transactional
   @Override
   public Mono<Void> delete(Long id) {
+    log.info("|-> [repository] delete start");
     return customerRepository.deleteById(id);
   }
 }

@@ -293,14 +293,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PutAccountRequest'
+              $ref: '#/components/schemas/PutMovementRequest'
       responses:
         "200":
           description: <b>`OK`</b>
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PutAccountResponse'
+                $ref: '#/components/schemas/PutMovementResponse'
         "400":
           $ref: '#/components/responses/BadRequest'
         "401":
@@ -359,6 +359,44 @@ paths:
           $ref: '#/components/responses/InternalServerError'
         "504":
           $ref: '#/components/responses/GatewayTimeout'
+  /movements/reports:
+    get:
+      tags:
+        - Movement
+      summary: Get movement
+      description: |
+        Search for movement information
+      operationId: getMovementByFilter
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/StartDate"
+        - $ref: "#/components/parameters/EndDate"
+      responses:
+        "200":
+          description: <b>`OK`</b>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMovementByFilterResponse'
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "405":
+          $ref: '#/components/responses/MethodNotAllowed'
+        "409":
+          $ref: '#/components/responses/Conflict'
+        "429":
+          $ref: '#/components/responses/TooManyRequests'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+        "504":
+          $ref: '#/components/responses/GatewayTimeout'
+
 components:
   schemas:
     GetAccountResponse:
@@ -378,7 +416,7 @@ components:
         accountNumber:
           $ref: '#/components/schemas/AccountNumber'
     GetMovementResponse:
-      $ref: '#/components/schemas/Movement'
+      $ref: '#/components/schemas/MovementResponse'
     PostMovementRequest:
       $ref: '#/components/schemas/Movement'
     PostMovementResponse:
@@ -386,6 +424,26 @@ components:
       properties:
         movementId:
           $ref: '#/components/schemas/MovementId'
+    PutMovementRequest:
+      $ref: '#/components/schemas/Movement'
+    PutMovementResponse:
+      type: object
+      properties:
+        movementId:
+          $ref: '#/components/schemas/MovementId'
+    GetMovementByFilterResponse:
+      type: array
+      items:
+        $ref: "#/components/schemas/MovementReport"
+    MovementReport:
+      type: object
+      properties:
+        accountId:
+          $ref: "#/components/schemas/AccountNumber"
+        movements:
+          type: array
+          items:
+            $ref: "#/components/schemas/MovementReportResponse"
     AccountUpdate:
       type: object
       properties:
@@ -399,6 +457,8 @@ components:
       title: account
       type: object
       properties:
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
         accountNumber:
           $ref: '#/components/schemas/AccountNumber'
         accountType:
@@ -412,15 +472,48 @@ components:
       title: movement
       type: object
       properties:
+        accountId:
+          $ref: '#/components/schemas/AccountNumber'
         amount:
           $ref: '#/components/schemas/Amount'
         movementType:
           $ref: '#/components/schemas/MovementType'
+      description: movement
+    MovementResponse:
+      title: movement
+      type: object
+      properties:
+        accountId:
+          $ref: '#/components/schemas/AccountNumber'
+        amount:
+          $ref: '#/components/schemas/Amount'
         balance:
           $ref: '#/components/schemas/Balance'
+        movementType:
+          $ref: '#/components/schemas/MovementType'
         date:
           $ref: '#/components/schemas/MovementDate'
       description: movement
+    MovementReportResponse:
+      title: movement
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/Amount'
+        balance:
+          $ref: '#/components/schemas/Balance'
+        movementType:
+          $ref: '#/components/schemas/MovementType'
+        date:
+          $ref: '#/components/schemas/MovementDate'
+      description: movement
+    CustomerId:
+      title: customerId
+      maxLength: 30
+      minLength: 0
+      type: string
+      description: customer id
+      example: "1725374134"
     AccountNumber:
       title: accountNumber
       maxLength: 30
@@ -470,7 +563,7 @@ components:
       example: deposit
     Amount:
       title: amount
-      minimum: 0
+      minimum: 1
       type: number
       description: Movement amount
       example: 550
@@ -658,6 +751,38 @@ components:
       schema:
         type: string
         example: a10bae03-279d-4724-ba5b-bd1353f87295
+    CustomerId:
+      name: customerId
+      in: query
+      description: Customer id
+      required: true
+      style: form
+      explode: true
+      schema:
+        type: string
+        example: 1725374134
+    StartDate:
+      name: startDate
+      in: query
+      description: Range of dates to search
+      required: true
+      style: form
+      explode: true
+      schema:
+        type: string
+        format: date-time
+        example: 2022-03-16T00:00:00Z
+    EndDate:
+      name: endDate
+      in: query
+      description: Range of dates to search
+      required: true
+      style: form
+      explode: true
+      schema:
+        type: string
+        format: date-time
+        example: 2022-03-16T00:00:00Z
     AccountId:
       name: accountNumber
       in: path

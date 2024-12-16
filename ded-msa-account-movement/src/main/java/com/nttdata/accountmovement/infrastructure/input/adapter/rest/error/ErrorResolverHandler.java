@@ -1,6 +1,7 @@
 package com.nttdata.accountmovement.infrastructure.input.adapter.rest.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nttdata.accountmovement.infrastructure.exception.BussinessValidException;
 import com.nttdata.accountmovement.infrastructure.exception.CodeConflictException;
 import com.nttdata.accountmovement.infrastructure.exception.FailureException;
 import com.nttdata.accountmovement.infrastructure.exception.NotFoundEntityException;
@@ -52,6 +53,7 @@ public class ErrorResolverHandler implements ErrorWebExceptionHandler {
     resolvers.put(WebExchangeBindException.class, new WebExchangeBindExceptionResolver());
     resolvers.put(ServerWebInputException.class, new ServerWebInputExceptionResolver());
     resolvers.put(NotFoundEntityException.class, new NotFoundErrorResolver());
+    resolvers.put(BussinessValidException.class, new ConflictExceptionResolver());
     resolvers.put(CodeConflictException.class, new ConflictExceptionResolver());
   }
 

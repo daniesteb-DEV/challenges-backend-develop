@@ -56,6 +56,7 @@ public class PostgresPersonRepositoryImpl implements PostgresPersonRepository {
   @Transactional
   @Override
   public Mono<Void> delete(Long id) {
+    log.info("|-> [repository] delete start");
     return personRepository.deleteById(id)
         .doOnSuccess(response -> log.info("|-> [repository] delete finished successfully."))
         .doOnError(error -> log.error(

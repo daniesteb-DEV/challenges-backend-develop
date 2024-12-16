@@ -9,6 +9,7 @@ import com.nttdata.customer.infrastructure.input.adapter.rest.models.PostCustome
 import com.nttdata.customer.infrastructure.input.adapter.rest.models.PutCustomerResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -44,7 +45,8 @@ public class CustomerController implements CustomersApi {
     log.info("|-> [controller] postCustomer start ");
     return customerServicePort.registerCustomer(customerMapper.toCustomer(body))
         .map(customerMapper::toPostCustomerResponse)
-        .map(ResponseEntity::ok)
+        .map(postCustomerResponse -> ResponseEntity.status(HttpStatus.CREATED)
+            .body(postCustomerResponse))
         .doOnSuccess(response -> log.info("|-> [controller] postCustomer finished successfully"))
         .doOnError(error -> log.error(
                        "|-> [controller] postCustomer finished with error. ErrorDetail: {}",
