@@ -42,11 +42,13 @@ public interface MovementMapper {
   @Mapping(target = "movementId", source = "movementUuid")
   PutMovementResponse toPutMovementResponse(Movement movement);
 
-  @Mapping(target = "accountNumber", source = "account.accountNumber")
+  @Mapping(target = "customer.customerId", source = "account.customerId")
   @Mapping(target = "movements", source = "movementList")
   MovementReport toMovementReport(Account account, List<Movement> movementList);
 
-  @Mapping(target = "accountId", source = "accountNumber")
+  @Mapping(target = "account", source = "account")
+  @Mapping(target = "customer", source = "customer")
+  @Mapping(target = "movements", source = "movements")
   com.nttdata.accountmovement.infrastructure.input.adapter.rest.models.MovementReport toMovementReport(
       MovementReport movementReport);
 

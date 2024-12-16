@@ -438,12 +438,21 @@ components:
     MovementReport:
       type: object
       properties:
-        accountId:
-          $ref: "#/components/schemas/AccountNumber"
+        customer:
+          $ref: "#/components/schemas/Customer"
+        account:
+          $ref: "#/components/schemas/AccountReport"
         movements:
           type: array
           items:
             $ref: "#/components/schemas/MovementReportResponse"
+    Customer:
+      type: object
+      properties:
+        customerId:
+          $ref: "#/components/schemas/CustomerId"
+        customerName:
+          $ref: "#/components/schemas/CustomerName"
     AccountUpdate:
       type: object
       properties:
@@ -453,6 +462,26 @@ components:
           $ref: '#/components/schemas/OpeningBalance'
         status:
           $ref: '#/components/schemas/Status'
+    CustomerName:
+      title: customerName
+      maxLength: 100
+      minLength: 0
+      type: string
+      description: customer name
+      example: Daniel Jimenez
+    AccountReport:
+      title: account
+      type: object
+      properties:
+        accountNumber:
+          $ref: '#/components/schemas/AccountNumber'
+        accountType:
+          $ref: '#/components/schemas/AccountType'
+        openingBalance:
+          $ref: '#/components/schemas/OpeningBalance'
+        status:
+          $ref: '#/components/schemas/Status'
+      description: account
     Account:
       title: account
       type: object

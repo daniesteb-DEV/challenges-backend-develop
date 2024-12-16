@@ -11,7 +11,7 @@ public interface MovementRepository extends ReactiveCrudRepository<MovementEntit
 
   Mono<MovementEntity> findByMovementUuid(String movementUuid);
 
-  @Query("select m.* from movement m inner join account a on a.customer_id = :customerId where m.movement_date between :startDate and :endDate")
+  @Query("select m.* from movement m inner join account a on a.customer_id = :customerId where m.movement_date between :startDate and :endDate group by m.id")
   Flux<MovementEntity> findByFilter(String customerId,
                                     OffsetDateTime startDate,
                                     OffsetDateTime endDate);

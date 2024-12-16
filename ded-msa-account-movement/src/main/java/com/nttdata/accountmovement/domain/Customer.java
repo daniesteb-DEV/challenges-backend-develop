@@ -1,6 +1,5 @@
 package com.nttdata.accountmovement.domain;
 
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Generated;
@@ -15,8 +14,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Generated
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MovementReport {
-  Customer customer;
-  Account account;
-  List<Movement> movements;
+public class Customer {
+  String customerId;
+  String customerName;
 }

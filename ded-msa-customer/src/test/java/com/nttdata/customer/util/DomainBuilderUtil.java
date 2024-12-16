@@ -14,7 +14,7 @@ public class DomainBuilderUtil {
       String password,
       String status
   ) {
-    return Customer.builder().customerId(customerId).password(password).status(status).build();
+    return  Customer.builder().customerId(customerId).password(password).status(status).build();
   }
 
   @NonNull

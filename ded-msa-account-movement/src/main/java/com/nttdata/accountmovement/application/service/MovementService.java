@@ -74,6 +74,9 @@ public class MovementService implements MovementServicePort {
                        if (accountFound.getOpeningBalance().compareTo(BigDecimal.ZERO) == 0) {
                          return Mono.error(new BussinessValidException("Saldo no disponible"));
                        }
+                       if (accountFound.getOpeningBalance().compareTo(movement.getAmount()) < 0) {
+                         return Mono.error(new BussinessValidException("Saldo insuficiente"));
+                       }
                        accountFound.setOpeningBalance(accountFound.getOpeningBalance()
                                                           .subtract(movement.getAmount()));
                        break;
