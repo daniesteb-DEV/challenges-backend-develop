@@ -94,13 +94,30 @@ tasks.register('buildSpringServer', GenerateTask) {
     ]
 }
 
+tasks.register('buildClientCustomer', GenerateTask) {
+    inputSpec = "$rootDir/src/main/resources/openapi-ded-msa-customer.yaml".toString()
+    generatorName = "java"
+    templateDir = "$rootDir/src/main/resources/openapi-templates/client"
+    apiPackage = "${packageName}.infrastructure.output.customer.client"
+    modelPackage = "${packageName}.infrastructure.output.customer.client.models"
+    outputDir = "$buildDir/generated".toString()
+    library = "webclient"
+    configOptions.putAll([
+            useSpringBoot3 : "true",
+            useJakartaEe   : "true",
+            openApiNullable: "false",
+            sourceFolder   : "src/main/java",
+            configPackage  : "${packageName}.infrastructure.output.customer.config"
+    ])
+}
+
 tasks.register("optimusCreateUnitTest", JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'com.nttdata.test.core.ProcessMain'
 }
 
 compileJava {
-    dependsOn buildSpringServer
+    dependsOn buildSpringServer, buildClientCustomer
     options.compilerArgs += [
             "-Amapstruct.suppressGeneratorTimestamp=true",
             "-Amapstruct.suppressGeneratorVersionInfoComment=true",
