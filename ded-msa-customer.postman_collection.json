@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "3e8203f2-23a7-4f5d-883d-d21db404df78",
+		"name": "ded-msa-customer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6357317"
+	},
+	"item": [
+		{
+			"name": "GetCustomer",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8082/customers?id=1725374134",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"customers"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1725374134"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostCustomer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"1725374134\",\r\n  \"name\": \"Daniel Jimenez\",\r\n  \"gender\": \"masculino\",\r\n  \"age\": 65,\r\n  \"address\": \"Carcelen E9 N90-62\",\r\n  \"phone\": \"0998320367\",\r\n  \"password\": \"root\",\r\n  \"status\": \"activo\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PutCustomer",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Daniel Jimenez\",\r\n  \"gender\": \"masculino\",\r\n  \"age\": 65,\r\n  \"address\": \"Carceln E9 N90-62\",\r\n  \"phone\": \"string\",\r\n  \"password\": \"string\",\r\n  \"status\": \"string\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/customers/1725374134",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"customers",
+						"1725374134"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteCustomer",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8082/customers/1725374134",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"customers",
+						"1725374134"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

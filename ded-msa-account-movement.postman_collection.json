@@ -1,0 +1,311 @@
+{
+	"info": {
+		"_postman_id": "6085e62c-6feb-4c6f-8897-9c15db9a76aa",
+		"name": "ded-msa-account-movement",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6357317"
+	},
+	"item": [
+		{
+			"name": "getAccount",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8083/accounts?accountNumber=2203767188",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"accounts"
+					],
+					"query": [
+						{
+							"key": "accountNumber",
+							"value": "2203767188"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postAccount",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customerId\": \"1725374134\",\r\n    \"accountNumber\": \"2203767199\",\r\n    \"accountType\": \"ahorros\",\r\n    \"openingBalance\": 7000, \r\n    \"status\": \"activa\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8083/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "putAccount",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"accountType\": \"ahorros\",\r\n  \"openingBalance\": 5000,\r\n  \"status\": \"activa\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/accounts/2203767188",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"accounts",
+						"2203767188"
+					]
+				},
+				"description": "Generated from cURL: curl -X 'PUT' \\\r\n  'http://localhost:8080/ded/v1/accounts/2203767188' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"accountType\": \"ahorros\",\r\n  \"openingBalance\": 1400,\r\n  \"status\": \"activa\"\r\n}'"
+			},
+			"response": []
+		},
+		{
+			"name": "deleteAccount",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8083/accounts/2203767188",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"accounts",
+						"2203767188"
+					]
+				},
+				"description": "Generated from cURL: curl -X 'DELETE' \\\r\n  'http://localhost:8080/ded/v1/accounts/2203767188' \\\r\n  -H 'accept: */*'"
+			},
+			"response": []
+		},
+		{
+			"name": "getMovement",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8083/movements?movementId=618a64aa-44f0-4926-a0e8-6c9bc15ec2da",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"movements"
+					],
+					"query": [
+						{
+							"key": "movementId",
+							"value": "618a64aa-44f0-4926-a0e8-6c9bc15ec2da"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl -X 'GET' \\\r\n  'http://localhost:8080/ded/v1/movements?movementId=a10bae03-279d-4724-ba5b-bd1353f87295' \\\r\n  -H 'accept: application/json'"
+			},
+			"response": []
+		},
+		{
+			"name": "postMovement",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"accountId\": \"2203767199\",\r\n  \"amount\": 1400,\r\n  \"movementType\": \"Deposito\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/movements",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"movements"
+					]
+				},
+				"description": "Generated from cURL: curl -X 'POST' \\\r\n  'http://localhost:8080/ded/v1/movements' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"accountId\": \"2203767188\",\r\n  \"amount\": 550,\r\n  \"movementType\": \"deposit\",\r\n  \"balance\": 2300,\r\n  \"date\": \"2022-03-16T00:00:00Z\"\r\n}'"
+			},
+			"response": []
+		},
+		{
+			"name": "putMovement",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"accountId\": \"2203767188\",\r\n  \"amount\": 550,\r\n  \"movementType\": \"deposit\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/movements/0730a88d-a6c2-416a-b9f4-8dd79470c354",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"movements",
+						"0730a88d-a6c2-416a-b9f4-8dd79470c354"
+					]
+				},
+				"description": "Generated from cURL: curl -X 'PUT' \\\r\n  'http://localhost:8080/ded/v1/movements/a10bae03-279d-4724-ba5b-bd1353f87295' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"accountId\": \"2203767188\",\r\n  \"amount\": 550,\r\n  \"movementType\": \"deposit\",\r\n  \"balance\": 2300,\r\n  \"date\": \"2022-03-16T00:00:00Z\"\r\n}'"
+			},
+			"response": []
+		},
+		{
+			"name": "deleteMovement",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8083/movements/618a64aa-44f0-4926-a0e8-6c9bc15ec2da",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"movements",
+						"618a64aa-44f0-4926-a0e8-6c9bc15ec2da"
+					]
+				},
+				"description": "Generated from cURL: curl -X 'DELETE' \\\r\n  'http://localhost:8080/ded/v1/movements/a10bae03-279d-4724-ba5b-bd1353f87295' \\\r\n  -H 'accept: */*'"
+			},
+			"response": []
+		},
+		{
+			"name": "getMovementsByFilter",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8083/movements/reports?customerId=1725374134&startDate=2024-12-10T00:00:00Z&endDate=2024-12-20T00:00:00Z",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"movements",
+						"reports"
+					],
+					"query": [
+						{
+							"key": "customerId",
+							"value": "1725374134"
+						},
+						{
+							"key": "startDate",
+							"value": "2024-12-10T00:00:00Z"
+						},
+						{
+							"key": "endDate",
+							"value": "2024-12-20T00:00:00Z"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl -X 'GET' \\\r\n  'http://localhost:8080/ded/v1/movements/reports?clientId=1725374134&startDate=2022-03-16T00%3A00%3A00Z&endDate=2022-03-16T00%3A00%3A00Z' \\\r\n  -H 'accept: application/json'"
+			},
+			"response": []
+		}
+	]
+}
