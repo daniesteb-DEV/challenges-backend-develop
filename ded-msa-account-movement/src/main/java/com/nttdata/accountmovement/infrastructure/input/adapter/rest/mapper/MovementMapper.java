@@ -1,8 +1,10 @@
 package com.nttdata.accountmovement.infrastructure.input.adapter.rest.mapper;
 
 import com.nttdata.accountmovement.domain.Account;
+import com.nttdata.accountmovement.domain.Customer;
 import com.nttdata.accountmovement.domain.Movement;
 import com.nttdata.accountmovement.domain.MovementReport;
+import com.nttdata.accountmovement.infrastructure.input.adapter.rest.models.GetMovementByFilterResponse;
 import com.nttdata.accountmovement.infrastructure.input.adapter.rest.models.MovementReportResponse;
 import com.nttdata.accountmovement.infrastructure.input.adapter.rest.models.MovementResponse;
 import com.nttdata.accountmovement.infrastructure.input.adapter.rest.models.PostMovementResponse;
@@ -42,18 +44,21 @@ public interface MovementMapper {
   @Mapping(target = "movementId", source = "movementUuid")
   PutMovementResponse toPutMovementResponse(Movement movement);
 
-  @Mapping(target = "customer.customerId", source = "account.customerId")
   @Mapping(target = "movements", source = "movementList")
   MovementReport toMovementReport(Account account, List<Movement> movementList);
 
-  @Mapping(target = "account", source = "account")
   @Mapping(target = "customer", source = "customer")
-  @Mapping(target = "movements", source = "movements")
-  com.nttdata.accountmovement.infrastructure.input.adapter.rest.models.MovementReport toMovementReport(
-      MovementReport movementReport);
+  @Mapping(target = "accountMovements", source = "accountMovements")
+  GetMovementByFilterResponse toGetMovementByFilterResponse(com.nttdata.accountmovement.domain.MovementReportResponse movementReportResponse);
 
   @Mapping(target = "date", source = "movementDate", qualifiedByName = "convertLocalDatetimeToOffsetDateTime")
   MovementReportResponse toMovementReportResponse(Movement movement);
+
+  @Mapping(target = "customer", source = "customer")
+  @Mapping(target = "accountMovements", source = "movementReportList")
+  com.nttdata.accountmovement.domain.MovementReportResponse toMovementReportResponse(Customer customer,
+                                                                                     List<MovementReport> movementReportList);
+
 
   @Named("convertLocalDatetimeToOffsetDateTime")
   static OffsetDateTime convertLocalDatetimeToOffsetDateTime(LocalDateTime dateToConvert) {

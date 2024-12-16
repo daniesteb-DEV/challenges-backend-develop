@@ -2,8 +2,9 @@ package com.nttdata.accountmovement.application.service;
 
 import com.nttdata.accountmovement.application.input.port.MovementServicePort;
 import com.nttdata.accountmovement.application.output.port.RepositoryServicePort;
+import com.nttdata.accountmovement.domain.Customer;
 import com.nttdata.accountmovement.domain.Movement;
-import com.nttdata.accountmovement.domain.MovementReport;
+import com.nttdata.accountmovement.domain.MovementReportResponse;
 import com.nttdata.accountmovement.infrastructure.exception.BussinessValidException;
 import com.nttdata.accountmovement.infrastructure.input.adapter.rest.mapper.MovementMapper;
 import java.math.BigDecimal;
@@ -11,7 +12,6 @@ import java.time.OffsetDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -23,9 +23,9 @@ public class MovementService implements MovementServicePort {
   private final MovementMapper movementMapper;
 
   @Override
-  public Flux<MovementReport> retrieveMovementsByFilter(String customerId,
-                                                        OffsetDateTime startDate,
-                                                        OffsetDateTime endDate) {
+  public Mono<MovementReportResponse> retrieveMovementsByFilter(String customerId,
+                                                                OffsetDateTime startDate,
+                                                                OffsetDateTime endDate) {
     return repositoryServicePort.findAccountByCustomer(
             customerId
         )
@@ -45,7 +45,13 @@ public class MovementService implements MovementServicePort {
                               tupleObjects.getT2()
                           )
                      )
-        );
+        )
+        .collectList()
+        .map(movementReportList -> movementMapper.toMovementReportResponse(
+            Customer.builder()
+                .build(),
+            movementReportList
+        ));
   }
 
   @Override

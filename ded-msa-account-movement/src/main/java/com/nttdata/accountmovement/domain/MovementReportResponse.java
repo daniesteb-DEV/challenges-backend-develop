@@ -17,8 +17,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Generated
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MovementReport {
+public class MovementReportResponse {
 
-  Account account;
-  List<Movement> movements;
+  Customer customer;
+  List<MovementReport> accountMovements;
 }

@@ -8,8 +8,8 @@ import com.nttdata.accountmovement.infrastructure.input.adapter.rest.mapper.Acco
 import com.nttdata.accountmovement.infrastructure.input.adapter.rest.mapper.MovementMapper;
 import com.nttdata.accountmovement.infrastructure.input.adapter.rest.models.Account;
 import com.nttdata.accountmovement.infrastructure.input.adapter.rest.models.AccountUpdate;
+import com.nttdata.accountmovement.infrastructure.input.adapter.rest.models.GetMovementByFilterResponse;
 import com.nttdata.accountmovement.infrastructure.input.adapter.rest.models.Movement;
-import com.nttdata.accountmovement.infrastructure.input.adapter.rest.models.MovementReport;
 import com.nttdata.accountmovement.infrastructure.input.adapter.rest.models.MovementResponse;
 import com.nttdata.accountmovement.infrastructure.input.adapter.rest.models.PostAccountResponse;
 import com.nttdata.accountmovement.infrastructure.input.adapter.rest.models.PostMovementResponse;
@@ -23,7 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Controller
@@ -116,18 +115,17 @@ public class AccountMovementController implements AccountsApi, MovementsApi {
   }
 
   @Override
-  public Mono<ResponseEntity<Flux<MovementReport>>> getMovementByFilter(String customerId,
-                                                                        OffsetDateTime startDate,
-                                                                        OffsetDateTime endDate,
-                                                                        ServerWebExchange exchange) {
-    return Mono.just(ResponseEntity.ok(movementServicePort.retrieveMovementsByFilter(
-                                               customerId,
-                                               startDate,
-                                               endDate
-                                           )
-                                           .map(movementMapper::toMovementReport)
-                     )
-    );
+  public Mono<ResponseEntity<GetMovementByFilterResponse>> getMovementByFilter(String customerId,
+                                                                               OffsetDateTime startDate,
+                                                                               OffsetDateTime endDate,
+                                                                               ServerWebExchange exchange) {
+    return movementServicePort.retrieveMovementsByFilter(
+            customerId,
+            startDate,
+            endDate
+        )
+        .map(movementMapper::toGetMovementByFilterResponse)
+        .map(ResponseEntity::ok);
   }
 
   @Override

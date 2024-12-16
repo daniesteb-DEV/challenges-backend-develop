@@ -432,14 +432,17 @@ components:
         movementId:
           $ref: '#/components/schemas/MovementId'
     GetMovementByFilterResponse:
-      type: array
-      items:
-        $ref: "#/components/schemas/MovementReport"
-    MovementReport:
       type: object
       properties:
         customer:
           $ref: "#/components/schemas/Customer"
+        accountMovements:
+          type: array
+          items:
+            $ref: "#/components/schemas/MovementReport"
+    MovementReport:
+      type: object
+      properties:
         account:
           $ref: "#/components/schemas/AccountReport"
         movements:
