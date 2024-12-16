@@ -1,8 +1,8 @@
 package com.nttdata.accountmovement.application.service;
 
 import com.nttdata.accountmovement.application.input.port.MovementServicePort;
+import com.nttdata.accountmovement.application.output.port.CustomerServicePort;
 import com.nttdata.accountmovement.application.output.port.RepositoryServicePort;
-import com.nttdata.accountmovement.domain.Customer;
 import com.nttdata.accountmovement.domain.Movement;
 import com.nttdata.accountmovement.domain.MovementReportResponse;
 import com.nttdata.accountmovement.infrastructure.exception.BussinessValidException;
@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 public class MovementService implements MovementServicePort {
 
   private final RepositoryServicePort repositoryServicePort;
+  private final CustomerServicePort customerServicePort;
   private final MovementMapper movementMapper;
 
   @Override
@@ -47,11 +48,16 @@ public class MovementService implements MovementServicePort {
                      )
         )
         .collectList()
-        .map(movementReportList -> movementMapper.toMovementReportResponse(
-            Customer.builder()
-                .build(),
-            movementReportList
-        ));
+        .flatMap(movementReports -> Mono.zip(
+                     customerServicePort.findCustomerById(customerId),
+                     Mono.just(movementReports)
+                 )
+        )
+        .map(tupleObjects -> movementMapper.toMovementReportResponse(
+                 tupleObjects.getT1(),
+                 tupleObjects.getT2()
+             )
+        );
   }
 
   @Override

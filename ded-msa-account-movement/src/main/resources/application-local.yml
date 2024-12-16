@@ -10,3 +10,7 @@ spring:
     url: r2dbc:postgresql://localhost:5432/proof-bank
     username: postgres
     password: root
+http-client:
+  api:
+    client-customer:
+      base-url: http://127.0.0.1:8083/
