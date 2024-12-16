@@ -26,7 +26,7 @@ public class CustomerController implements CustomersApi {
   private final CustomerControllerMapper customerMapper;
 
   @Override
-  public Mono<ResponseEntity<Customer>> getCustomer(String id, ServerWebExchange exchange) {
+    public Mono<ResponseEntity<Customer>> getCustomer(String id, ServerWebExchange exchange) {
     log.info("|-> [controller] getCustomer start ");
     return customerServicePort.getCustomer(id)
         .map(customerMapper::toCustomer)

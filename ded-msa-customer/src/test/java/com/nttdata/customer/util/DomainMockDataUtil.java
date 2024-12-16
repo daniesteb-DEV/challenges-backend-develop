@@ -20,11 +20,22 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class DomainMockDataUtil {
 
-  public Customer getCustomer() {
-    return buildCustomer(CUSTOMER_ID, CUSTOMER_PASSWORD, CUSTOMER_STATUS);
+  public static Customer getCustomer() {
+    return buildCustomer(
+        CUSTOMER_ID,
+        CUSTOMER_PASSWORD,
+        CUSTOMER_STATUS,
+        PERSON_ID,
+        PERSON_IDENTIFICATION,
+        PERSON_NAME,
+        PERSON_GENDER,
+        PERSON_AGE,
+        PERSON_ADDRESS,
+        PERSON_PHONE
+    );
   }
 
-  public Person getPerson() {
+  public static Person getPerson() {
     return buildPerson(
         PERSON_ID,
         PERSON_IDENTIFICATION,

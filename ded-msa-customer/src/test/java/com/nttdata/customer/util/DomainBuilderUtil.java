@@ -12,9 +12,27 @@ public class DomainBuilderUtil {
   public static Customer buildCustomer(
       String customerId,
       String password,
-      String status
+      String status,
+      Long personId,
+      String identification,
+      String name,
+      String gender,
+      int age,
+      String address,
+      String phone
   ) {
-    return  Customer.builder().customerId(customerId).password(password).status(status).build();
+    return Customer.builder()
+        .customerId(customerId)
+        .password(password)
+        .status(status)
+        .personId(personId)
+        .identification(identification)
+        .name(name)
+        .gender(gender)
+        .age(age)
+        .address(address)
+        .phone(phone)
+        .build();
   }
 
   @NonNull
