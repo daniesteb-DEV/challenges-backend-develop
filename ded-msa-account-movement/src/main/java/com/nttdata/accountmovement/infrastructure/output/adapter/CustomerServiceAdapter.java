@@ -2,6 +2,7 @@ package com.nttdata.accountmovement.infrastructure.output.adapter;
 
 import com.nttdata.accountmovement.application.output.port.CustomerServicePort;
 import com.nttdata.accountmovement.domain.Customer;
+import com.nttdata.accountmovement.infrastructure.exception.BussinessValidException;
 import com.nttdata.accountmovement.infrastructure.output.adapter.mapper.CustomerServiceMapper;
 import com.nttdata.accountmovement.infrastructure.output.customer.client.CustomerApi;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class CustomerServiceAdapter implements CustomerServicePort {
     log.info("|-> [output-adapter] findCustomerById start ");
     return customerApi.getCustomer(customerId)
         .map(customerServiceMapper::toCustomer)
+        .onErrorMap(throwable -> new BussinessValidException(throwable.getMessage()))
         .doOnSuccess(response -> log.info(
                          "|-> [output-adapter] findCustomerById finished successfully"
                      )

@@ -13,4 +13,4 @@ spring:
 http-client:
   api:
     client-customer:
-      base-url: http://127.0.0.1:8083/
+      base-url: http://127.0.0.1:8082/

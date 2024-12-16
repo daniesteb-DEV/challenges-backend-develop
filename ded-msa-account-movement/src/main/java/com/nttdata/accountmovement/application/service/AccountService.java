@@ -1,6 +1,7 @@
 package com.nttdata.accountmovement.application.service;
 
 import com.nttdata.accountmovement.application.input.port.AccountServicePort;
+import com.nttdata.accountmovement.application.output.port.CustomerServicePort;
 import com.nttdata.accountmovement.application.output.port.RepositoryServicePort;
 import com.nttdata.accountmovement.domain.Account;
 import com.nttdata.accountmovement.infrastructure.input.adapter.rest.mapper.AccountMapper;
@@ -15,6 +16,7 @@ import reactor.core.publisher.Mono;
 public class AccountService implements AccountServicePort {
 
   private final RepositoryServicePort repositoryServicePort;
+  private final CustomerServicePort customerServicePort;
   private final AccountMapper accountMapper;
 
   @Override
@@ -32,7 +34,8 @@ public class AccountService implements AccountServicePort {
   @Override
   public Mono<Account> registerAccount(Account account) {
     log.info("|-> [service] registerAccount start ");
-    return repositoryServicePort.createAccount(account)
+    return customerServicePort.findCustomerById(account.getCustomerId())
+        .flatMap(customer -> repositoryServicePort.createAccount(account))
         .doOnSuccess(response -> log.info("|-> [service] registerAccount finished successfully"))
         .doOnError(error -> log.error(
                        "|-> [service] registerAccount finished with error. ErrorDetail: {}",
