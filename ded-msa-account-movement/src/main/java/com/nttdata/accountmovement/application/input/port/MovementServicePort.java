@@ -1,10 +1,8 @@
 package com.nttdata.accountmovement.application.input.port;
 
 import com.nttdata.accountmovement.domain.Movement;
-import com.nttdata.accountmovement.domain.MovementReport;
 import com.nttdata.accountmovement.domain.MovementReportResponse;
 import java.time.OffsetDateTime;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface MovementServicePort {
