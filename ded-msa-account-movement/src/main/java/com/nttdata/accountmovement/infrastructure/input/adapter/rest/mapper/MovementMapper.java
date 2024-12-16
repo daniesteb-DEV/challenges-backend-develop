@@ -33,9 +33,6 @@ public interface MovementMapper {
   Movement toMovement(com.nttdata.accountmovement.infrastructure.input.adapter.rest.models.Movement movement);
 
   @Mapping(target = "accountId", source = "accountNumber")
-  com.nttdata.accountmovement.infrastructure.input.adapter.rest.models.Movement toMovement(Movement movement);
-
-  @Mapping(target = "accountId", source = "accountNumber")
   @Mapping(target = "date", source = "movementDate", qualifiedByName = "convertLocalDatetimeToOffsetDateTime")
   MovementResponse toMovementResponse(Movement movement);
 

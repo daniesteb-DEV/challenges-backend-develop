@@ -1,9 +1,7 @@
 package com.nttdata.accountmovement.infrastructure.output.repository.entity;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import jdk.jfr.Timestamp;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
