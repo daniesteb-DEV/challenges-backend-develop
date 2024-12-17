@@ -7,6 +7,8 @@ import static com.nttdata.accountmovement.util.DomainMockDataUtil.getCustomer;
 import static com.nttdata.accountmovement.util.DomainMockDataUtil.getMovement;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.nttdata.accountmovement.application.output.port.CustomerServicePort;
@@ -70,5 +72,8 @@ class MovementServiceTest {
         )
         .expectNextCount(1)
         .verifyComplete();
+    verify(repositoryServicePort, times(1)).findAccountByCustomer(anyString());
+    verify(repositoryServicePort, times(1)).findMovementsByFilter(anyString(), any(), any());
+    verify(customerServicePort, times(1)).findCustomerById(anyString());
   }
 }
