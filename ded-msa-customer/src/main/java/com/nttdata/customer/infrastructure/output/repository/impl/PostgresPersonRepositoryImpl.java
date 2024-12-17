@@ -1,8 +1,10 @@
 package com.nttdata.customer.infrastructure.output.repository.impl;
 
+import static com.nttdata.customer.infrastructure.util.Constants.CODE_CONFLICT_TITLE;
 import static com.nttdata.customer.infrastructure.util.ErrorUtils.buildErrorModel;
 
 import com.nttdata.customer.infrastructure.exception.CodeConflictException;
+import com.nttdata.customer.infrastructure.exception.DatabaseException;
 import com.nttdata.customer.infrastructure.exception.NotFoundEntityException;
 import com.nttdata.customer.infrastructure.output.repository.PersonRepository;
 import com.nttdata.customer.infrastructure.output.repository.PostgresPersonRepository;
@@ -46,11 +48,7 @@ public class PostgresPersonRepositoryImpl implements PostgresPersonRepository {
                        error.getMessage()
                    )
         )
-        .onErrorMap(throwable -> new CodeConflictException(
-                        buildErrorModel(throwable),
-                        HttpStatus.CONFLICT.value()
-                    )
-        );
+        .onErrorMap(DatabaseException::new);
   }
 
   @Transactional
@@ -65,7 +63,7 @@ public class PostgresPersonRepositoryImpl implements PostgresPersonRepository {
                    )
         )
         .onErrorMap(throwable -> new CodeConflictException(
-                        buildErrorModel(throwable),
+                        buildErrorModel(CODE_CONFLICT_TITLE, throwable),
                         HttpStatus.CONFLICT.value()
                     )
         );

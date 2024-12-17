@@ -26,9 +26,10 @@ public final class ErrorUtils {
   }
 
   @NonNull
-  public static ErrorModel buildErrorModel(@NonNull final Throwable throwable) {
+  public static ErrorModel buildErrorModel(@NonNull final String errorTitle,
+                                           @NonNull final Throwable throwable) {
     final ErrorModel errorModel = new ErrorModel();
-    errorModel.setTitle("CODE CONFLICT");
+    errorModel.setTitle(errorTitle);
     errorModel.setDetail(throwable.getMessage());
     return errorModel;
   }

@@ -2,10 +2,12 @@ package com.nttdata.customer.infrastructure.input.adapter.rest.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nttdata.customer.infrastructure.exception.CodeConflictException;
+import com.nttdata.customer.infrastructure.exception.DatabaseException;
 import com.nttdata.customer.infrastructure.exception.FailureException;
 import com.nttdata.customer.infrastructure.exception.NotFoundEntityException;
 import com.nttdata.customer.infrastructure.input.adapter.rest.error.resolver.ConflictExceptionResolver;
 import com.nttdata.customer.infrastructure.input.adapter.rest.error.resolver.ConstraintViolationExceptionResolver;
+import com.nttdata.customer.infrastructure.input.adapter.rest.error.resolver.DatabaseErrorResolver;
 import com.nttdata.customer.infrastructure.input.adapter.rest.error.resolver.ErrorResolver;
 import com.nttdata.customer.infrastructure.input.adapter.rest.error.resolver.NotFoundErrorResolver;
 import com.nttdata.customer.infrastructure.input.adapter.rest.error.resolver.ServerWebInputExceptionResolver;
@@ -22,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -53,6 +56,7 @@ public class ErrorResolverHandler implements ErrorWebExceptionHandler {
     resolvers.put(ServerWebInputException.class, new ServerWebInputExceptionResolver());
     resolvers.put(NotFoundEntityException.class, new NotFoundErrorResolver());
     resolvers.put(CodeConflictException.class, new ConflictExceptionResolver());
+    resolvers.put(DatabaseException.class, new DatabaseErrorResolver());
   }
 
   @NonNull

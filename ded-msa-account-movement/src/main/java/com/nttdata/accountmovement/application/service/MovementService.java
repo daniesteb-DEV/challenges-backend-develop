@@ -38,7 +38,8 @@ public class MovementService implements MovementServicePort {
                                  endDate
                              )
                              .filter(movement -> movement.getAccountNumber()
-                                 .equals(account.getAccountNumber()))
+                                 .equals(account.getAccountNumber())
+                             )
                              .collectList()
                      )
                      .map(tupleObjects -> movementMapper.toMovementReport(
