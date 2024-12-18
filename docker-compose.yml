@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: proof-bank
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+
+  ded-msa-customer:
+    build:
+      context: ./ded-msa-customer
+      dockerfile: Dockerfile
+    container_name: ded-msa-customer
+    ports:
+      - "8082:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/proof-bank
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+    networks:
+      - backend
+    depends_on:
+      - postgres
+
+  ded-msa-account-movement:
+    build:
+      context: ./ded-msa-account-movement
+      dockerfile: Dockerfile
+    container_name: ded-msa-account-movement
+    ports:
+      - "8083:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/proof-bank
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+    networks:
+      - backend
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:
+    driver: bridge

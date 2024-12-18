@@ -1,5 +1,6 @@
 package com.nttdata.customer.domain;
 
+import jakarta.validation.constraints.Max;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Generated;
@@ -19,6 +20,7 @@ import lombok.experimental.SuperBuilder;
 public class Person {
 
   Long personId;
+  @Max(10)
   String identification;
   String name;
   String gender;
