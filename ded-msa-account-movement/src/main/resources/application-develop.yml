@@ -1,0 +1,16 @@
+server:
+  port: ${GENERIC_WS_PORT}
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_POSTGRES_URL}
+    username: ${SPRING_DATASOURCE_POSTGRES_USERNAME}
+    password: ${SPRING_DATASOURCE_POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  r2dbc:
+    url: ${SPRING_DATASOURCE_POSTGRES_URL}
+    username: ${SPRING_DATASOURCE_POSTGRES_USERNAME}
+    password: ${SPRING_DATASOURCE_POSTGRES_PASSWORD}
+http-client:
+  api:
+    client-customer:
+      base-url: ${CLUSTER_BASE_URL_CUSTOMER}/

@@ -456,6 +456,8 @@ components:
       style: form
       explode: true
       schema:
+        maxLength: 20
+        minLength: 1
         type: string
         example: "1725374134"
     Id:

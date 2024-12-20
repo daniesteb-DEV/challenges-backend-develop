@@ -19,6 +19,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Account {
 
+
   Long accountId;
   String accountNumber;
   String accountType;

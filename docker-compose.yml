@@ -38,9 +38,9 @@ services:
     ports:
       - "8083:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/proof-bank
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_POSTGRES_URL: jdbc:postgresql://database:5432/proof-bank
+      SPRING_DATASOURCE_POSTGRES_USERNAME: postgres
+      SPRING_DATASOURCE_POSTGRES_PASSWORD: root
     networks:
       - backend
     depends_on:

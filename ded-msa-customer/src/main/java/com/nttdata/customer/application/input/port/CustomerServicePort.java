@@ -12,7 +12,7 @@ public interface CustomerServicePort {
 
   Mono<Customer> registerCustomer(@Valid Customer customer);
 
-  Mono<Customer> updateCustomer(Customer customer, String personId);
+  Mono<Customer> updateCustomer(@Valid Customer customer, String personId);
 
   Mono<Boolean> deleteCustomer(String personId);
 }

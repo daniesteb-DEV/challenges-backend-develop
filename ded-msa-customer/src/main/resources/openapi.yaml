@@ -205,8 +205,9 @@ components:
           $ref: '#/components/schemas/Id'
     Id:
       title: id
-      maxLength: 30
-      minLength: 0
+      maxLength: 20
+      minLength: 1
+      pattern: ^(?:\d{8,10}|[A-Za-z]\d{7,8}|\d{13})$
       type: string
       description: customer id
       example: "1725374134"
@@ -456,6 +457,8 @@ components:
       style: form
       explode: true
       schema:
+        maxLength: 20
+        minLength: 0
         type: string
         example: "1725374134"
     Id:

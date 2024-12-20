@@ -1,6 +1,7 @@
 package com.nttdata.customer.domain;
 
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Generated;
@@ -21,6 +22,7 @@ public class Person {
 
   Long personId;
   @Max(10)
+  @Pattern(regexp = "^(?:\\d{8,10}|[A-Za-z]\\d{7,8}|\\d{13})$")
   String identification;
   String name;
   String gender;

@@ -1,0 +1,14 @@
+variables:
+  own:
+    config:
+      - name: GENERIC_WS_PORT
+        value: "8080"
+      - name: CLUSTER_BASE_URL_CUSTOMER
+        value: "http://127.0.0.1:8082"
+    secret:
+      - name: "SPRING_DATASOURCE_POSTGRES_URL"
+        location: SPRING_DATASOURCE_POSTGRES_URL
+      - name: "SPRING_DATASOURCE_POSTGRES_USERNAME"
+        location: SPRING_DATASOURCE_POSTGRES_USERNAME
+      - name: "SPRING_DATASOURCE_POSTGRES_PASSWORD"
+        location: SPRING_DATASOURCE_POSTGRES_PASSWORD
