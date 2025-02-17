@@ -22,7 +22,7 @@ public class InfrastructureMockDataUtil {
 
   @NonNull
   public static Customer getCustomer() {
-    return new Customer().id(CUSTOMER_ID)
+    return new Customer().id(PERSON_IDENTIFICATION)
         .name(PERSON_NAME)
         .gender(PERSON_GENDER)
         .age(PERSON_AGE)

@@ -5,7 +5,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Constants {
 
-  public static final String CUSTOMER_ID = "1";
+  public static final String CUSTOMER_ID = "fd640d89-86a6-4c3b-a793-e4c971a9dc95";
   public static final String CUSTOMER_PASSWORD = "password";
   public static final String CUSTOMER_STATUS = "ACTIVO";
   public static final Long PERSON_ID = 1L;

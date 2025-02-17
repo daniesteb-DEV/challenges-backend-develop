@@ -21,9 +21,9 @@ public class CustomerService implements CustomerServicePort {
   public Mono<Customer> getCustomer(String customerId) {
     log.info("|-> [service] getCustomer start ");
     return repositoryServicePort.findCustomerByPersonId(customerId)
-        .doOnSuccess(response -> log.info("|-> [service] getCustomer finished successfully"))
+        .doOnSuccess(response -> log.info("<-| [service] getCustomer finished successfully"))
         .doOnError(error -> log.error(
-                       "|-> [service] getCustomer finished with error. ErrorDetail: {}",
+                       "<-| [service] getCustomer finished with error. ErrorDetail: {}",
                        error.getMessage()
                    )
         );
@@ -33,9 +33,9 @@ public class CustomerService implements CustomerServicePort {
   public Mono<Customer> registerCustomer(Customer customer) {
     log.info("|-> [service] registerCustomer start ");
     return repositoryServicePort.saveCustomer(customer)
-        .doOnSuccess(response -> log.info("|-> [service] registerCustomer finished successfully"))
+        .doOnSuccess(response -> log.info("<-| [service] registerCustomer finished successfully"))
         .doOnError(error -> log.error(
-                       "|-> [service] registerCustomer finished with error. ErrorDetail: {}",
+                       "<-| [service] registerCustomer finished with error. ErrorDetail: {}",
                        error.getMessage()
                    )
         );

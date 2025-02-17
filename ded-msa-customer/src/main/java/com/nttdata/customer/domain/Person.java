@@ -21,7 +21,6 @@ import lombok.experimental.SuperBuilder;
 public class Person {
 
   Long personId;
-  @Max(10)
   @Pattern(regexp = "^(?:\\d{8,10}|[A-Za-z]\\d{7,8}|\\d{13})$")
   String identification;
   String name;

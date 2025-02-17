@@ -36,11 +36,11 @@ public class PostgresServiceAdapter implements RepositoryServicePort {
              )
         )
         .doOnSuccess(response -> log.info(
-                         "|-> [output-adapter] findCustomerByPersonId finished successfully"
+                         "<-| [output-adapter] findCustomerByPersonId finished successfully"
                      )
         )
         .doOnError(error -> log.error(
-                       "|-> [output-adapter] findCustomerByPersonId finished with error. ErrorDetail: {}",
+                       "<-| [output-adapter] findCustomerByPersonId finished with error. ErrorDetail: {}",
                        error.getMessage()
                    )
         );
@@ -64,11 +64,11 @@ public class PostgresServiceAdapter implements RepositoryServicePort {
              )
         )
         .doOnSuccess(response -> log.info(
-                         "|-> [output-adapter] saveCustomer finished successfully"
+                         "<-| [output-adapter] saveCustomer finished successfully"
                      )
         )
         .doOnError(error -> log.error(
-                       "|-> [output-adapter] saveCustomer finished with error. ErrorDetail: {}",
+                       "<-| [output-adapter] saveCustomer finished with error. ErrorDetail: {}",
                        error.getMessage()
                    )
         );
@@ -90,11 +90,11 @@ public class PostgresServiceAdapter implements RepositoryServicePort {
                 )
         )
         .doOnSuccess(response -> log.info(
-                         "|-> [output-adapter] updateCustomer finished successfully"
+                         "<-| [output-adapter] updateCustomer finished successfully"
                      )
         )
         .doOnError(error -> log.error(
-                       "|-> [output-adapter] updateCustomer finished with error. ErrorDetail: {}",
+                       "<-| [output-adapter] updateCustomer finished with error. ErrorDetail: {}",
                        error.getMessage()
                    )
         );
@@ -120,11 +120,11 @@ public class PostgresServiceAdapter implements RepositoryServicePort {
         )
         .then(Mono.fromCallable(() -> true))
         .doOnSuccess(response -> log.info(
-                         "|-> [output-adapter] deleteCustomer finished successfully"
+                         "<-| [output-adapter] deleteCustomer finished successfully"
                      )
         )
         .doOnError(error -> log.error(
-                       "|-> [output-adapter] deleteCustomer finished with error. ErrorDetail: {}",
+                       "<-| [output-adapter] deleteCustomer finished with error. ErrorDetail: {}",
                        error.getMessage()
                    )
         );

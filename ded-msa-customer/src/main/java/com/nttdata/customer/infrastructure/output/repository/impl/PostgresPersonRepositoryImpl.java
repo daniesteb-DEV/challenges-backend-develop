@@ -28,10 +28,11 @@ public class PostgresPersonRepositoryImpl implements PostgresPersonRepository {
     log.info("|-> [output-adapter] findByIdentification start ");
     return personRepository.findByIdentification(personId)
         .switchIfEmpty(Mono.error(new NotFoundEntityException("Person")))
+        .onErrorMap(DatabaseException::new)
         .doOnSuccess(response -> log.info(
-            "|-> [output-adapter] findByIdentification finished successfully"))
+            "<-| [output-adapter] findByIdentification finished successfully"))
         .doOnError(error -> log.error(
-                       "|-> [output-adapter] findByIdentification finished with error. ErrorDetail: {} ",
+                       "<-| [output-adapter] findByIdentification finished with error. ErrorDetail: {} ",
                        error.getMessage()
                    )
         );

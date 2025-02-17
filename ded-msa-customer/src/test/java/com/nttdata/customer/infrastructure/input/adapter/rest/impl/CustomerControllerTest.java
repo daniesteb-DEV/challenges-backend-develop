@@ -96,8 +96,7 @@ class CustomerControllerTest {
   @Test
   void postCustomerThenExpectException() {
     Customer infrastructureCustomer = InfrastructureMockDataUtil.getCustomer();
-    when(customerServicePort.registerCustomer(any())).thenReturn(Mono.error(new UnexpectedException(
-        "")));
+    when(customerServicePort.registerCustomer(any())).thenReturn(Mono.error(new UnexpectedException("")));
     webTestClient
         .post()
         .uri(uriBuilder -> uriBuilder.path("/customers")

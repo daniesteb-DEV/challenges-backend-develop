@@ -6,5 +6,6 @@ import lombok.experimental.UtilityClass;
 public class Constants {
 
   public static final String DATABASE_EXCEPTION_TITLE = "DATABASE EXCEPTION";
+  public static final String DATABASE_EXCEPTION_DETAIL = "Database error, check connection or syntax";
   public static final String CODE_CONFLICT_TITLE = "CODE CONFLICT";
 }

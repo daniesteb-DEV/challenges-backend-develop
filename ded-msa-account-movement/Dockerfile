@@ -4,4 +4,4 @@ WORKDIR /opt/build/
 COPY ./build/*.txt /opt/build/
 COPY ./build/libs/*.jar /opt/build/
 
-CMD ["/bin/sh", "/opt/build/init.sh"]
+ENTRYPOINT ["java","-jar","ded-msa-account-movement-1.0.0.jar"]

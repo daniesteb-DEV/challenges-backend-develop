@@ -26,14 +26,14 @@ public class CustomerController implements CustomersApi {
   private final CustomerControllerMapper customerMapper;
 
   @Override
-    public Mono<ResponseEntity<Customer>> getCustomer(String id, ServerWebExchange exchange) {
+  public Mono<ResponseEntity<Customer>> getCustomer(String id, ServerWebExchange exchange) {
     log.info("|-> [controller] getCustomer start ");
     return customerServicePort.getCustomer(id)
         .map(customerMapper::toCustomer)
         .map(ResponseEntity::ok)
-        .doOnSuccess(response -> log.info("|-> [controller] getCustomer finished successfully"))
+        .doOnSuccess(response -> log.info("<-| [controller] getCustomer finished successfully"))
         .doOnError(error -> log.error(
-                       "|-> [controller] getCustomer finished with error. ErrorDetail: {}",
+                       "<-| [controller] getCustomer finished with error. ErrorDetail: {}",
                        error.getMessage()
                    )
         );
@@ -47,9 +47,9 @@ public class CustomerController implements CustomersApi {
         .map(customerMapper::toPostCustomerResponse)
         .map(postCustomerResponse -> ResponseEntity.status(HttpStatus.CREATED)
             .body(postCustomerResponse))
-        .doOnSuccess(response -> log.info("|-> [controller] postCustomer finished successfully"))
+        .doOnSuccess(response -> log.info("<-| [controller] postCustomer finished successfully"))
         .doOnError(error -> log.error(
-                       "|-> [controller] postCustomer finished with error. ErrorDetail: {}",
+                       "<-| [controller] postCustomer finished with error. ErrorDetail: {}",
                        error.getMessage()
                    )
         );
@@ -63,9 +63,9 @@ public class CustomerController implements CustomersApi {
     return customerServicePort.updateCustomer(customerMapper.toCustomer(body), id)
         .map(customerMapper::toPutCustomerResponse)
         .map(ResponseEntity::ok)
-        .doOnSuccess(response -> log.info("|-> [controller] putCustomer finished successfully"))
+        .doOnSuccess(response -> log.info("<-| [controller] putCustomer finished successfully"))
         .doOnError(error -> log.error(
-                       "|-> [controller] putCustomer finished with error. ErrorDetail: {}",
+                       "<-| [controller] putCustomer finished with error. ErrorDetail: {}",
                        error.getMessage()
                    )
         );
