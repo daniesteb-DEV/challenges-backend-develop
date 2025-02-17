@@ -1,6 +1,5 @@
 package com.nttdata.customer.util;
 
-import static com.nttdata.customer.util.Constants.CUSTOMER_ID;
 import static com.nttdata.customer.util.Constants.CUSTOMER_PASSWORD;
 import static com.nttdata.customer.util.Constants.CUSTOMER_STATUS;
 import static com.nttdata.customer.util.Constants.PERSON_ADDRESS;

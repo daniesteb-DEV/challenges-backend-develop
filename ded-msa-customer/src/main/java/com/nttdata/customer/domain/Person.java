@@ -1,6 +1,5 @@
 package com.nttdata.customer.domain;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
