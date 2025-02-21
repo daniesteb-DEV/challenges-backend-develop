@@ -1,7 +1,3 @@
--- DROP SCHEMA public;
-
-CREATE SCHEMA public AUTHORIZATION pg_database_owner;
-
 -- DROP SEQUENCE public.account_id_seq;
 
 CREATE SEQUENCE public.account_id_seq

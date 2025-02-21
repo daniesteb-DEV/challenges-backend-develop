@@ -7,16 +7,10 @@ spring:
     active: local
   application:
     name: ded-msa-customer
-  jpa:
-    database-platform: org.hibernate.dialect.SQLServerDialect
-    show-sql: false
-    hibernate:
-      ddl-auto: none
-    properties:
-      hibernate:
-        format_sql: true
-        default_schema: business_banking_model_order
-        dialect: org.hibernate.dialect.SQLServerDialect
+  sql:
+    init:
+      mode: embedded
+      platform: postgres
   datasource:
     driver-class-name: org.postgresql.Driver
 test:

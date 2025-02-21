@@ -53,6 +53,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
     implementation 'org.postgresql:postgresql'
+    implementation 'org.liquibase:liquibase-core'
     runtimeOnly 'org.postgresql:r2dbc-postgresql'
 
     // Mapstruct
