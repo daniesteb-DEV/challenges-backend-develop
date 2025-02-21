@@ -7,5 +7,9 @@ spring:
     active: local
   application:
     name: ded-msa-account-movement
+  sql:
+    init:
+      mode: embedded
+      platform: postgres
   datasource:
     driver-class-name: org.postgresql.Driver
