@@ -4,8 +4,8 @@ import static com.nttdata.customer.infrastructure.util.Constants.CODE_CONFLICT_T
 import static com.nttdata.customer.infrastructure.util.ErrorUtils.buildErrorModel;
 
 import com.nttdata.customer.infrastructure.exception.CodeConflictException;
-import com.nttdata.customer.infrastructure.exception.DatabaseException;
 import com.nttdata.customer.infrastructure.exception.NotFoundEntityException;
+import com.nttdata.customer.infrastructure.exception.NotSaveEntityException;
 import com.nttdata.customer.infrastructure.output.repository.PersonRepository;
 import com.nttdata.customer.infrastructure.output.repository.PostgresPersonRepository;
 import com.nttdata.customer.infrastructure.output.repository.entity.PersonEntity;
@@ -34,8 +34,7 @@ public class PostgresPersonRepositoryImpl implements PostgresPersonRepository {
                        "<-| [output-adapter] findByIdentification finished with error. ErrorDetail: {} ",
                        error.getMessage()
                    )
-        )
-        .onErrorMap(DatabaseException::new);
+        );
   }
 
   @Transactional
@@ -49,7 +48,7 @@ public class PostgresPersonRepositoryImpl implements PostgresPersonRepository {
                        error.getMessage()
                    )
         )
-        .onErrorMap(DatabaseException::new);
+        .onErrorMap(throwable -> new NotSaveEntityException("Person"));
   }
 
   @Transactional
